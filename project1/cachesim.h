@@ -3,7 +3,13 @@
 
 /* Feel free to add any constants, enums, structs etc. that
 you need to this file! */
-
+typedef struct
+{
+	char valid;
+	char dirty;
+	int tag;
+	int tag_size;
+} block;
 
 /*******************************************************************************
 *

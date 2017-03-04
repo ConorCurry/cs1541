@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "cachesim.h"
 
 /*
@@ -51,6 +52,11 @@ void setup_caches()
 	/* Set up your caches here! */
 	/* This call to dump_cache_info is just to show some debugging information
 	and you may remove it. */
+	//TODO: Find out how to make these global
+	extern block icache[icache_info.num_blocks];
+	extern block d0_cache[dcache_info[0].num_blocks];
+	extern block d1_cache[dcache_info[1].num_blocks];
+	extern block d2_cache[dcache_info[2].num_blocks];
 	dump_cache_info();
 }
 
@@ -59,9 +65,19 @@ void handle_access(AccessType type, addr_t address)
 	/* This is where all the fun stuff happens! This function is called to
 	simulate a memory access. You figure out what type it is, and do all your
 	fun simulation stuff from here. */
+	int i;
 	switch(type)
 	{
 		case Access_I_FETCH:
+			//TODO: Verify these changes
+			for(i=0; i<icache_info.num_blocks; i++) {
+				if(!icache[i].dirty) {
+					icache[i].dirty = 1;
+					icache[i].valid = 1;
+					icache[i].tag_size = (int)log2(icache_info.num_blocks);
+					icache[i].tag = address >> icache[i].tag_size;	
+				}
+			}
 			/* These prints are just for debugging and should be removed. */
 			printf("I_FETCH at %08lx\n", address);
 			break;
