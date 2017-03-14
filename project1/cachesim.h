@@ -110,10 +110,20 @@ typedef struct
 typedef struct
 {
 	/* Starting as a direct-mapped implementation */
+	//int word_shift;
+	int row_shift;
+	int tag_shift;
+	//int word_mask;
+	int row_mask;
+	int tag_mask;
 	Block **blocks; 
 	int read_cnt;
 	int lw_cnt;
 	int compulsory_cnt;
 	int conflict_cnt;
+	int write_cnt;
+	int sw_cnt;
+	int compulsory_w_cnt;
+	int conflict_w_cnt;
 } Cache;
 #endif

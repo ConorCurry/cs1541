@@ -1,0 +1,53 @@
+L1 D-Cache statistics:
+        Number of reads performed:      2410223
+        Words read from memory:         206672
+        Number of writes performed:     794805
+        Words written to memory:        71316
+        Read misses:
+          Compulsory misses:            1198
+          Capacity misses:              42196
+          Misses with compulsory:       43394
+          Miss rate with compulsory:    1.80%
+          Miss rate without compulsory: 1.75%
+        Write misses:
+          Compulsory misses:            850
+          Capacity misses:              7424
+          Misses with compulsory:       8274
+          Miss rate with compulsory:    1.04%
+          Miss rate without compulsory: 0.93%
+
+L2 D-Cache statistics:
+        Number of reads performed:      51668
+        Words read from memory:         58416
+        Number of writes performed:     17829
+        Words written to memory:        8
+        Read misses:
+          Compulsory misses:            8197
+          Capacity misses:              34
+          Misses with compulsory:       8231
+          Miss rate with compulsory:    15.93%
+          Miss rate without compulsory: 0.07%
+        Write misses:
+          Compulsory misses:            6329
+          Capacity misses:              44
+          Misses with compulsory:       6373
+          Miss rate with compulsory:    35.75%
+          Miss rate without compulsory: 0.25%
+
+L3 D-Cache statistics:
+        Number of reads performed:      14604
+        Words read from memory:         58416
+        Number of writes performed:     2
+        Words written to memory:        0
+        Read misses:
+          Compulsory misses:            14602
+          Capacity misses:              0
+          Misses with compulsory:       14602
+          Miss rate with compulsory:    99.99%
+          Miss rate without compulsory: 0.00%
+        Write misses:
+          Compulsory misses:            2
+          Capacity misses:              0
+          Misses with compulsory:       2
+          Miss rate with compulsory:    100.00%
+          Miss rate without compulsory: 0.00%

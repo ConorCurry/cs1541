@@ -1,0 +1,9 @@
+I-Cache statistics:
+        Number of reads performed:      284041
+        Words read from memory:         207088
+        Read misses:
+          Compulsory misses:            8
+          Capacity misses:              51764
+          Misses with compulsory:       51772
+          Miss rate with compulsory:    18.23%
+          Miss rate without compulsory: 18.22%

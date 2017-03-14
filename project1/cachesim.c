@@ -53,15 +53,9 @@ for an example of how to check the members. */
 static CacheInfo icache_info;
 static CacheInfo dcache_info[3];
 Cache icache;
-
+Cache dcache[3];
 static int ADDR_BITS = 32;
 static int BYTE_BITS = 2;
-static int word_shift;
-static int row_shift;
-static int tag_shift;
-static int word_mask;
-static int row_mask;
-static int tag_mask;
 
 int lg(int power_of_2) {
 	int res = 0;
@@ -69,41 +63,47 @@ int lg(int power_of_2) {
 	return res;
 }
 
+void make_cache(Cache *cache, CacheInfo cache_info) {
+	int assoc_bits = lg(cache_info.associativity);
+	int word_bits = lg(cache_info.words_per_block);
+	int row_bits = lg(icache_info.num_blocks) - assoc_bits;
+	int tag_bits = ADDR_BITS - BYTE_BITS - word_bits - row_bits;
+
+	//cache->word_shift = BYTE_BITS;
+	cache->row_shift = BYTE_BITS + word_bits;
+	cache->tag_shift = BYTE_BITS + word_bits + row_bits;
+
+	//cache->word_mask = (1 << word_bits) - 1;
+	cache->row_mask = (1 << row_bits) - 1;
+	cache->tag_mask = (1 << tag_bits) - 1;
+
+	cache->blocks = (Block **) calloc(cache_info.associativity, sizeof(Block *));
+	for (int i = 0; i < cache_info.associativity; i++) {
+		cache->blocks[i] = (Block *) calloc(
+				cache_info.num_blocks / cache_info.associativity,
+				sizeof(Block));
+	}
+}
+
 void setup_caches()
 {
 	/* Set up your caches here! */
 	/* This call to dump_cache_info is just to show some debugging information
 	and you may remove it. */
-	dump_cache_info(); 
+	//dump_cache_info(); 
 
 	srand(1000);
 
-	int assoc_bits = lg(icache_info.associativity);
-	int word_bits = lg(icache_info.words_per_block);
-	int row_bits = lg(icache_info.num_blocks) - assoc_bits;
-	int tag_bits = ADDR_BITS -BYTE_BITS - word_bits - row_bits;
-	printf("WordBits %d, RowBits %d, TagBits %d\n", word_bits, row_bits, tag_bits);
-
-	word_shift = BYTE_BITS;
-	row_shift = BYTE_BITS + word_bits; 
-	tag_shift = BYTE_BITS + word_bits + row_bits;
-
-	word_mask = (1 << word_bits) - 1;
-	row_mask = (1 << row_bits) - 1;
-	tag_mask = (1 << tag_bits) - 1;
-
-	icache.blocks = (Block **) calloc(icache_info.associativity, sizeof(Block *));
-	for (int i = 0; i < icache_info.associativity; i++) {
-		icache.blocks[i] = (Block *) calloc(
-				icache_info.num_blocks / icache_info.associativity, 
-				sizeof(Block));
+	make_cache(&icache, icache_info);
+	for(int d = 0; d < 3; d++) {
+		make_cache(&dcache[d], dcache_info[d]);
 	}
 }
 
 void handle_ifetch_direct(addr_t address) {
 	/* determine: miss or hit? */
-	int row_idx = (address >> row_shift) & row_mask;
-	int tag = (address >> tag_shift) & tag_mask;
+	int row_idx = (address >> icache.row_shift) & icache.row_mask;
+	int tag = (address >> icache.tag_shift) & icache.tag_mask;
 	Block *cur_block = icache.blocks[0] + row_idx;
 	if (cur_block->valid) {
 		if (cur_block->tag == tag) {
@@ -156,7 +156,7 @@ Block *getRandom() {
 }
 
 void handle_ifetch_assoc(addr_t address) {
-	int tag = (address >> tag_shift) & tag_mask;
+	int tag = (address >> icache.tag_shift) & icache.tag_mask;
 	Block *open_block = NULL;
 	tick();
 	/* Linear search for matching block */
@@ -212,10 +212,10 @@ void handle_access(AccessType type, addr_t address)
 			icache.read_cnt++;
 			break;
 		case Access_D_READ:
-			printf("D_READ at %08lx\n", address);
+			//printf("D_READ at %08lx\n", address);
 			break;
 		case Access_D_WRITE:
-			printf("D_WRITE at %08lx\n", address);
+			//printf("D_WRITE at %08lx\n", address);
 			break;
 	}
 }
@@ -224,7 +224,7 @@ void print_statistics()
 {
 	/* Finally, after all the simulation happens, you have to show what the
 	results look like. Do that here.*/
-	printf("\nI-Cache statistics:\n");
+	printf("I-Cache statistics:\n");
 	printf("\tNumber of reads performed: \t%d\n", icache.read_cnt);
 	printf("\tWords read from memory: \t%d\n", icache.lw_cnt);
 	printf("\tRead misses:\n");
@@ -238,6 +238,36 @@ void print_statistics()
 			(icache.conflict_cnt + icache.compulsory_cnt)*100./icache.read_cnt);
 	printf("\t  Miss rate without compulsory: %.2f%%\n", 
 			icache.conflict_cnt*100./icache.read_cnt);  
+	if (dcache_info[0].num_blocks) {
+		printf("L1 D-Cache statistics:\n");
+		printf("\tNumber of reads performed:\t%d\n", dcache[0].read_cnt);
+		printf("\tWords read from memory:\t\t%d\n", dcache[0].lw_cnt);
+		printf("\tNumber of writes performed:\t%d\n", dcache[0].write_cnt);
+		printf("\tWords written to memory:\t%d\n", dcache[0].sw_cnt);
+		printf("\tRead misses:\n");
+		printf("\t  Compulsory misses:\t\t%d\n", dcache[0].compulsory_cnt);
+		if (dcache_info[0].associativity == 1)
+			printf("\t  Conflict misses:\t\t%d\n", dcache[0].conflict_cnt);
+		else
+			printf("\t  Capacity misses:\t\t%d\n", dcache[0].conflict_cnt);
+		printf("\t  Misses with compulsory:\t%d\n", dcache[0].compulsory_cnt
+							  + dcache[0].conflict_cnt);
+		printf("\t  Miss rate with compulsory:\t%.2f%%\n",
+				(dcache[0].conflict_cnt + dcache[0].compulsory_cnt)
+				* 100./dcache[0].read_cnt);
+		printf("\t  Miss rate without compulsory: %.2f%%\n",
+				dcache[0].conflict_cnt * 100. / dcache[0].read_cnt);
+		printf("\tWrite Misses:\n");
+		printf("\t  Compulsory Misses:\t\t%d\n", dcache[0].compulsory_w_cnt);
+		printf("\t  Conflict Misses:\t\t%d\n", dcache[0].conflict_w_cnt);
+		printf("\t  Misses with compulsory:\t%d\n", dcache[0].compulsory_w_cnt
+							  + dcache[0].conflict_w_cnt);
+		printf("\t  Miss rate with compulsory:\t%.2f%%\n",
+				(dcache[0].conflict_w_cnt + dcache[0].compulsory_w_cnt)
+				* 100. / dcache[0].write_cnt);
+		printf("\t  Miss rate without compulsory: %.2f%%\n",
+				dcache[0].conflict_w_cnt * 100. / dcache[0].write_cnt);
+	}
 }
 
 /*******************************************************************************
