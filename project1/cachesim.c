@@ -43,15 +43,83 @@ data write, or instruction fetch, respectively.
 your setup_caches function. Look in cachesim.h for the description of the
 CacheInfo struct for docs on what's inside it. Have a look at dump_cache_info
 for an example of how to check the members. */
+#define CRESET		"\e[0m"
+#define CRED		"\e[31m"
+#define CGREEN		"\e[32m"
+
+#define RED(X)		CRED X CRESET
+#define GREEN(X)	CGREEN X CRESET
+
 static CacheInfo icache_info;
 static CacheInfo dcache_info[3];
+Cache cache;
+static int ADDR_BITS = 32;
+static int BYTE_BITS = 2;
+static int word_shift;
+static int row_shift;
+static int tag_shift;
+static int word_mask;
+static int row_mask;
+static int tag_mask;
 
+static int iread_cnt;
+static int iloadword_cnt;
+static int icompulsory_miss_cnt;
+static int iconflict_miss_cnt;
+
+int lg(int power_of_2) {
+	int res = 0;
+	while (power_of_2 >>= 1) { ++res; }
+	return res;
+}
 void setup_caches()
 {
 	/* Set up your caches here! */
 	/* This call to dump_cache_info is just to show some debugging information
 	and you may remove it. */
-	dump_cache_info();
+	dump_cache_info(); 
+
+	int word_bits = lg(icache_info.words_per_block);
+	int row_bits = lg(icache_info.num_blocks);
+	int tag_bits = ADDR_BITS -BYTE_BITS - word_bits - row_bits;
+	printf("WordBits %d, RowBits %d, TagBits %d\n", word_bits, row_bits, tag_bits);
+	word_shift = BYTE_BITS;
+	row_shift = BYTE_BITS + word_bits; 
+	tag_shift = BYTE_BITS + word_bits + row_bits;
+
+	word_mask = (1 << word_bits) - 1;
+	row_mask = (1 << row_bits) - 1;
+	tag_mask = (1 << tag_bits) - 1;
+
+	cache.blocks = calloc(icache_info.num_blocks, sizeof(Block));
+}
+
+void handle_ifetch(addr_t address) {
+	/* determine: miss or hit? */
+	int row_idx = (address >> row_shift) & row_mask;
+	int tag = (address >> tag_shift) & tag_mask;
+	Block *cur_block = cache.blocks + row_idx;
+	if (cur_block->valid) {
+		/* Either Hit or Conflict Miss */
+		if (cur_block->tag == tag) {
+			/* Hit */
+			printf("I_FETCH at %08lx was a " GREEN("HIT\n"), address);
+		} else {
+			/* Conflict Miss */
+			*cur_block = (Block) {.valid = 1, .tag = tag};
+			printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
+			iconflict_miss_cnt++;
+			iloadword_cnt += icache_info.words_per_block;
+		}
+	} else {
+		/* Compulsory Miss */
+		/* We need to make a new block to put into the cache on a miss */
+		*cur_block = (Block) {.valid = 1, .tag = tag};
+		printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
+		icompulsory_miss_cnt++;
+		iloadword_cnt += icache_info.words_per_block;
+	}
+
 }
 
 void handle_access(AccessType type, addr_t address)
@@ -62,8 +130,10 @@ void handle_access(AccessType type, addr_t address)
 	switch(type)
 	{
 		case Access_I_FETCH:
-			/* These prints are just for debugging and should be removed. */
-			printf("I_FETCH at %08lx\n", address);
+			/* These prints are just for debugging and should be removed. */ 
+			/* printf("I_FETCH at %08lx\n", address); */
+			handle_ifetch(address);
+			iread_cnt++;
 			break;
 		case Access_D_READ:
 			printf("D_READ at %08lx\n", address);

@@ -99,4 +99,17 @@ void dump_cache_info();
 
 /* This is probably a better place to put your stuff. */
 
+typedef struct
+{
+	char valid;
+	char dirty;
+	int tag;
+	/* This might hold additional statistics tracking data */
+} Block;
+
+typedef struct
+{
+	/* Starting as a direct-mapped implementation */
+	Block *blocks; 
+} Cache;
 #endif
