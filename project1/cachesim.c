@@ -76,8 +76,11 @@ void setup_caches()
 	and you may remove it. */
 	dump_cache_info(); 
 
+	srand(1000);
+
+	int assoc_bits = lg(icache_info.associativity);
 	int word_bits = lg(icache_info.words_per_block);
-	int row_bits = lg(icache_info.num_blocks);
+	int row_bits = lg(icache_info.num_blocks) - assoc_bits;
 	int tag_bits = ADDR_BITS -BYTE_BITS - word_bits - row_bits;
 	printf("WordBits %d, RowBits %d, TagBits %d\n", word_bits, row_bits, tag_bits);
 
@@ -106,12 +109,14 @@ void handle_ifetch_direct(addr_t address) {
 		if (cur_block->tag == tag) {
 			/* Hit */
 			// printf("I_FETCH at %08lx was a " GREEN("HIT\n"), address);
+			return;
 		} else {
 			/* Conflict Miss */
 			*cur_block = (Block) {.valid = 1, .tag = tag};
 			// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
 			icache.conflict_cnt++;
 			icache.lw_cnt += icache_info.words_per_block;
+			return;
 		}
 	} else {
 		/* Compulsory Miss */
@@ -119,20 +124,47 @@ void handle_ifetch_direct(addr_t address) {
 		// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
 		icache.compulsory_cnt++;
 		icache.lw_cnt += icache_info.words_per_block;
+		return;
 	}
 
 }
 
 void handle_ifetch_assoc(addr_t address) {
 	int tag = (address >> tag_shift) & tag_mask;
+	Block *open_block = NULL;
+	/* Linear search for matching block */
+	/* Will also find an open block if one is available. */
 	for (int i = 0; i < icache_info.associativity; i++) {
 		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
 			if (icache.blocks[i][j].tag == tag) {
 				/* Hit */
+				printf("wat");
+				return;
+			}
+			if (!open_block && !icache.blocks[i][j].valid) {
+				open_block = icache.blocks[i] + j;
 			}
 		}
 	}
 	/* Miss */
+	if (open_block) {
+		/* Compulsory Miss */
+		*open_block = (Block) {.valid = 1, .tag = tag};
+		icache.compulsory_cnt++;
+		icache.lw_cnt += icache_info.words_per_block;
+		return;
+	} else if (icache_info.replacement == Replacement_LRU) {
+		/* Conflict Miss - Do LRU replacement */
+		return;
+	} else {
+		/* Conflict Miss - Do random replacement */
+		int repl_i = random() % icache_info.associativity;
+		int repl_j = random() % (icache_info.num_blocks / icache_info.associativity);
+		icache.blocks[repl_i][repl_j] = (Block) {.valid = 1, .tag = tag};
+		icache.conflict_cnt++;
+		icache.lw_cnt += icache_info.words_per_block;
+		return;
+	}
 }
 
 void handle_access(AccessType type, addr_t address)
@@ -145,10 +177,11 @@ void handle_access(AccessType type, addr_t address)
 		case Access_I_FETCH:
 			/* These prints are just for debugging and should be removed. */ 
 			/* printf("I_FETCH at %08lx\n", address); */
-			if (icache_info.associativity == 1)
+			if (icache_info.associativity == 1) {
 				handle_ifetch_direct(address);
-			else
+			} else {
 				handle_ifetch_assoc(address);
+			}
 			icache.read_cnt++;
 			break;
 		case Access_D_READ:
