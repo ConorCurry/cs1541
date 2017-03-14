@@ -129,6 +129,15 @@ void handle_read_direct(addr_t address, Cache *cache, CacheInfo cache_info) {
 
 }
 
+void write_allocate(addr_t address, Cache *cache, CacheInfo cache_info, Block *block, int tag) {
+	if (cache_info.words_per_block == 1) {
+		*block = (Block) {.valid = 1, .tag = tag};
+	} else {
+		cache->lw_cnt += cache_info.words_per_block;
+		*block = (Block) {.valid = 1, .tag = tag};
+	}
+}
+
 /* 
  * Write Schemes : 
  *	Write-Through	   => 't'
@@ -147,16 +156,22 @@ void handle_write_direct(addr_t address, Cache *cache, CacheInfo cache_info) {
 	if(cur_block->valid) {
 		if (cur_block->tag == tag) {
 			/* Hit */
-			if (cache_info.write_scheme == Write_WRITE_BACK) {
-				/* Dirty bit? */
+			return;
+		} else if(cache_info.write_scheme == Write_WRITE_THROUGH) {
+			cache->conflict_w_cnt++;
+			if (cache_info.allocate_scheme == Allocate_ALLOCATE) {
+				write_allocate(address, cache, cache_info, cur_block, tag);
 			}
 			return;
 		}
-		/* Miss */
-	}
-	/* Miss */
-	if (cache_info.write_scheme == Write_WRITE_THROUGH) {
-		cache->conflict_w_cnt++;
+	} else if (cache_info.write_scheme == Write_WRITE_THROUGH) {
+		/* Compulsory Miss, but doesn't count in write-around..? */
+		if (cache_info.allocate_scheme == Allocate_ALLOCATE) {
+			write_allocate(address, cache, cache_info, cur_block, tag);
+			cache->compulsory_w_cnt++;
+		} else {
+			cache->conflict_w_cnt++;
+		}
 	}
 }
 
@@ -284,7 +299,7 @@ void print_statistics()
 	results look like. Do that here.*/
 	printf("\nI-Cache statistics:\n");
 	printf("\tNumber of reads performed:\t%d\n", icache.read_cnt);
-	printf("\tWords read from memory:\t%d\n", icache.lw_cnt);
+	printf("\tWords read from memory:\t\t%d\n", icache.lw_cnt);
 	printf("\tRead misses:\n");
 	printf("\t  Compulsory misses:\t\t%d\n", icache.compulsory_cnt);
 	if (icache_info.associativity == 1)
