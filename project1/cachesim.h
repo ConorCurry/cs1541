@@ -110,7 +110,7 @@ typedef struct
 typedef struct
 {
 	/* Starting as a direct-mapped implementation */
-	Block *blocks; 
+	Block **blocks; 
 	int read_cnt;
 	int lw_cnt;
 	int compulsory_cnt;

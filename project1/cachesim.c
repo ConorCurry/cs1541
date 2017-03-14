@@ -89,14 +89,19 @@ void setup_caches()
 	row_mask = (1 << row_bits) - 1;
 	tag_mask = (1 << tag_bits) - 1;
 
-	icache.blocks = calloc(icache_info.num_blocks, sizeof(Block));
+	icache.blocks = (Block **) calloc(icache_info.associativity, sizeof(Block *));
+	for (int i = 0; i < icache_info.associativity; i++) {
+		icache.blocks[i] = (Block *) calloc(
+				icache_info.num_blocks / icache_info.associativity, 
+				sizeof(Block));
+	}
 }
 
-void handle_ifetch(addr_t address) {
+void handle_ifetch_direct(addr_t address) {
 	/* determine: miss or hit? */
 	int row_idx = (address >> row_shift) & row_mask;
 	int tag = (address >> tag_shift) & tag_mask;
-	Block *cur_block = icache.blocks + row_idx;
+	Block *cur_block = icache.blocks[0] + row_idx;
 	if (cur_block->valid) {
 		if (cur_block->tag == tag) {
 			/* Hit */
@@ -118,6 +123,18 @@ void handle_ifetch(addr_t address) {
 
 }
 
+void handle_ifetch_assoc(addr_t address) {
+	int tag = (address >> tag_shift) & tag_mask;
+	for (int i = 0; i < icache_info.associativity; i++) {
+		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
+			if (icache.blocks[i][j].tag == tag) {
+				/* Hit */
+			}
+		}
+	}
+	/* Miss */
+}
+
 void handle_access(AccessType type, addr_t address)
 {
 	/* This is where all the fun stuff happens! This function is called to
@@ -128,7 +145,10 @@ void handle_access(AccessType type, addr_t address)
 		case Access_I_FETCH:
 			/* These prints are just for debugging and should be removed. */ 
 			/* printf("I_FETCH at %08lx\n", address); */
-			handle_ifetch(address);
+			if (icache_info.associativity == 1)
+				handle_ifetch_direct(address);
+			else
+				handle_ifetch_assoc(address);
 			icache.read_cnt++;
 			break;
 		case Access_D_READ:
