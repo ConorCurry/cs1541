@@ -53,21 +53,39 @@ for an example of how to check the members. */
 static CacheInfo icache_info;
 static CacheInfo dcache_info[3];
 Cache icache;
+Cache dcache[3];
 
 static int ADDR_BITS = 32;
 static int BYTE_BITS = 2;
-static int word_shift;
-static int row_shift;
-static int tag_shift;
-static int word_mask;
-static int row_mask;
-static int tag_mask;
 
 int lg(int power_of_2) {
 	int res = 0;
 	while (power_of_2 >>= 1) { ++res; }
 	return res;
 }
+
+void make_cache(Cache *cache, CacheInfo cache_info) {
+	int assoc_bits = lg(cache_info.associativity);
+	int word_bits = lg(cache_info.words_per_block);
+	int row_bits = lg(icache_info.num_blocks) - assoc_bits;
+	int tag_bits = ADDR_BITS - BYTE_BITS - word_bits - row_bits;
+
+	cache->word_shift = BYTE_BITS;
+	cache->row_shift = BYTE_BITS + word_bits; 
+	cache->tag_shift = BYTE_BITS + word_bits + row_bits;
+
+	cache->word_mask = (1 << word_bits) - 1;
+	cache->row_mask = (1 << row_bits) - 1;
+	cache->tag_mask = (1 << tag_bits) - 1;
+
+	cache->blocks = (Block **) calloc(cache_info.associativity, sizeof(Block *));
+	for (int i = 0; i < cache_info.associativity; i++) {
+		cache->blocks[i] = (Block *) calloc(
+				cache_info.num_blocks / cache_info.associativity,
+				sizeof(Block));
+	}
+}
+
 
 void setup_caches()
 {
@@ -78,62 +96,75 @@ void setup_caches()
 
 	srand(1000);
 
-	int assoc_bits = lg(icache_info.associativity);
-	int word_bits = lg(icache_info.words_per_block);
-	int row_bits = lg(icache_info.num_blocks) - assoc_bits;
-	int tag_bits = ADDR_BITS -BYTE_BITS - word_bits - row_bits;
-	printf("WordBits %d, RowBits %d, TagBits %d\n", word_bits, row_bits, tag_bits);
-
-	word_shift = BYTE_BITS;
-	row_shift = BYTE_BITS + word_bits; 
-	tag_shift = BYTE_BITS + word_bits + row_bits;
-
-	word_mask = (1 << word_bits) - 1;
-	row_mask = (1 << row_bits) - 1;
-	tag_mask = (1 << tag_bits) - 1;
-
-	icache.blocks = (Block **) calloc(icache_info.associativity, sizeof(Block *));
-	for (int i = 0; i < icache_info.associativity; i++) {
-		icache.blocks[i] = (Block *) calloc(
-				icache_info.num_blocks / icache_info.associativity, 
-				sizeof(Block));
+	make_cache(&icache, icache_info);
+	for(int d = 0; d < 3; d++) {
+		make_cache(&dcache[d], dcache_info[d]);
 	}
 }
 
-void handle_ifetch_direct(addr_t address) {
+void handle_read_direct(addr_t address, Cache *cache, CacheInfo cache_info) {
 	/* determine: miss or hit? */
-	int row_idx = (address >> row_shift) & row_mask;
-	int tag = (address >> tag_shift) & tag_mask;
-	Block *cur_block = icache.blocks[0] + row_idx;
+	int row_idx = (address >> cache->row_shift) & cache->row_mask;
+	int tag = (address >> cache->tag_shift) & cache->tag_mask;
+	Block *cur_block = cache->blocks[0] + row_idx;
 	if (cur_block->valid) {
 		if (cur_block->tag == tag) {
 			/* Hit */
-			// printf("I_FETCH at %08lx was a " GREEN("HIT\n"), address);
 			return;
 		} else {
 			/* Conflict Miss */
 			*cur_block = (Block) {.valid = 1, .tag = tag};
-			// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
-			icache.conflict_cnt++;
-			icache.lw_cnt += icache_info.words_per_block;
+			cache->conflict_cnt++;
+			cache->lw_cnt += cache_info.words_per_block;
 			return;
 		}
 	} else {
 		/* Compulsory Miss */
 		*cur_block = (Block) {.valid = 1, .tag = tag};
 		// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
-		icache.compulsory_cnt++;
-		icache.lw_cnt += icache_info.words_per_block;
+		cache->compulsory_cnt++;
+		cache->lw_cnt += cache_info.words_per_block;
 		return;
 	}
 
 }
 
-void tick() {
+/* 
+ * Write Schemes : 
+ *	Write-Through	   => 't'
+ *	Write-Back  	   => 'b'
+ * Allocation Schemes :
+ *	Write-No-Allocate  => 'n'
+ *	Write-Allocate	   => 'a'
+ */
+void handle_write_direct(addr_t address, Cache *cache, CacheInfo cache_info) {
+	if (cache_info.write_scheme == Write_WRITE_THROUGH) {
+		cache->sw_cnt++;
+	}
+	int row_idx = (address >> cache->row_shift) & cache->row_mask;
+	int tag = (address >> cache-> tag_shift) & cache->tag_mask;
+	Block *cur_block = cache->blocks[0] + row_idx;
+	if(cur_block->valid) {
+		if (cur_block->tag == tag) {
+			/* Hit */
+			if (cache_info.write_scheme == Write_WRITE_BACK) {
+				/* Dirty bit? */
+			}
+			return;
+		}
+		/* Miss */
+	}
+	/* Miss */
+	if (cache_info.write_scheme == Write_WRITE_THROUGH) {
+		cache->conflict_w_cnt++;
+	}
+}
+
+void tick(Cache *cache, CacheInfo cache_info) {
 	/* Update times for LRU */
-	for (int i = 0; i < icache_info.associativity; i++) {
-		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
-			icache.blocks[i][j].last_used++;
+	for (int i = 0; i < cache_info.associativity; i++) {
+		for (int j = 0; j < cache_info.num_blocks / cache_info.associativity; j++) {
+			cache->blocks[i][j].last_used++;
 		}
 	}
 }
@@ -155,41 +186,57 @@ Block *getRandom() {
 	return &icache.blocks[repl_i][repl_j];
 }
 
-void handle_ifetch_assoc(addr_t address) {
-	int tag = (address >> tag_shift) & tag_mask;
-	Block *open_block = NULL;
-	tick();
+Block *find_hit_assoc(addr_t address, Cache *cache, CacheInfo cache_info) {
+	int tag = (address >> cache->tag_shift) & cache->tag_mask;
 	/* Linear search for matching block */
-	/* Will also find an open block if one is available. */
-	for (int i = 0; i < icache_info.associativity; i++) {
-		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
-			if (icache.blocks[i][j].tag == tag) {
+	for (int i = 0; i < cache_info.associativity; i++) {
+		for (int j = 0; j < cache_info.num_blocks / cache_info.associativity; j++) {
+			if (cache->blocks[i][j].tag == tag) {
 				/* Hit */
-				icache.blocks[i][j].last_used = 0;
-				return;
-			}
-			if (!open_block && !icache.blocks[i][j].valid) {
-				open_block = icache.blocks[i] + j;
+				return &cache->blocks[i][j];
 			}
 		}
 	}
+	return NULL;
+}
+
+Block *find_open_assoc(Cache *cache, CacheInfo cache_info) {
+	for (int i = 0; i < cache_info.associativity; i++) {
+		for (int j = 0; j < cache_info.num_blocks / cache_info.associativity; j++) {
+			if (!cache->blocks[i][j].valid) {
+				return &cache->blocks[i][j];
+			}
+		}
+	}
+	return NULL;
+}	
+
+void handle_read_assoc(addr_t address, Cache *cache, CacheInfo cache_info) {
+	tick(cache, cache_info);
+	Block *hit = find_hit_assoc(address, cache, cache_info);
+	if (hit) {
+		hit->last_used = 0;
+		return;
+	}	
+	Block *open_block = find_open_assoc(cache, cache_info); 
+	int tag = (address >> cache->tag_shift) & cache->tag_mask;
 	if (open_block) {
 		/* Compulsory Miss */
 		*open_block = (Block) {.valid = 1, .tag = tag};
-		icache.compulsory_cnt++;
-		icache.lw_cnt += icache_info.words_per_block;
+		cache->compulsory_cnt++;
+		cache->lw_cnt += cache_info.words_per_block;
 		return;
-	} else if (icache_info.replacement == Replacement_LRU) {
+	} else if (cache_info.replacement == Replacement_LRU) {
 		/* Conflict Miss - Do LRU replacement */
 		*getLRU() = (Block) {.valid = 1, .tag = tag};
-		icache.conflict_cnt++;
-		icache.lw_cnt += icache_info.words_per_block;
+		cache->conflict_cnt++;
+		cache->lw_cnt += cache_info.words_per_block;
 		return;
 	} else {
 		/* Conflict Miss - Do random replacement */
 		*getRandom() = (Block) {.valid = 1, .tag = tag};
-		icache.conflict_cnt++;
-		icache.lw_cnt += icache_info.words_per_block;
+		cache->conflict_cnt++;
+		cache->lw_cnt += cache_info.words_per_block;
 		return;
 	}
 }
@@ -205,17 +252,28 @@ void handle_access(AccessType type, addr_t address)
 			/* These prints are just for debugging and should be removed. */ 
 			/* printf("I_FETCH at %08lx\n", address); */
 			if (icache_info.associativity == 1) {
-				handle_ifetch_direct(address);
+				//handle_ifetch_direct(address);
+				handle_read_direct(address, &icache, icache_info);
 			} else {
-				handle_ifetch_assoc(address);
+				handle_read_assoc(address, &icache, icache_info);
 			}
 			icache.read_cnt++;
 			break;
 		case Access_D_READ:
-			printf("D_READ at %08lx\n", address);
+			if (dcache_info[0].associativity == 1) {
+				handle_read_direct(address, &dcache[0], dcache_info[0]);
+			} else {
+				handle_read_assoc(address, &dcache[0], dcache_info[0]);
+			}
+			dcache[0].read_cnt++;
+			//printf("D_READ at %08lx\n", address);
 			break;
 		case Access_D_WRITE:
-			printf("D_WRITE at %08lx\n", address);
+			if (dcache_info[0].associativity == 1) {
+				handle_write_direct(address, &dcache[0], dcache_info[0]);
+			}
+			dcache[0].write_cnt++;
+			//printf("D_WRITE at %08lx\n", address);
 			break;
 	}
 }
@@ -225,19 +283,49 @@ void print_statistics()
 	/* Finally, after all the simulation happens, you have to show what the
 	results look like. Do that here.*/
 	printf("\nI-Cache statistics:\n");
-	printf("\tNumber of reads performed: \t%d\n", icache.read_cnt);
-	printf("\tWords read from memory: \t%d\n", icache.lw_cnt);
+	printf("\tNumber of reads performed:\t%d\n", icache.read_cnt);
+	printf("\tWords read from memory:\t%d\n", icache.lw_cnt);
 	printf("\tRead misses:\n");
-	printf("\t  Compulsory misses: \t\t%d\n", icache.compulsory_cnt);
+	printf("\t  Compulsory misses:\t\t%d\n", icache.compulsory_cnt);
 	if (icache_info.associativity == 1)
-		printf("\t  Conflict misses: \t\t%d\n", icache.conflict_cnt);
+		printf("\t  Conflict misses:\t\t%d\n", icache.conflict_cnt);
 	else
-		printf("\t  Capacity misses: \t\t%d\n", icache.conflict_cnt);
-	printf("\t  Misses with compulsory: \t%d\n", icache.compulsory_cnt + icache.conflict_cnt);
-	printf("\t  Miss rate with compulsory: \t%.2f%%\n", 
+		printf("\t  Capacity misses:\t\t%d\n", icache.conflict_cnt);
+	printf("\t  Misses with compulsory:\t%d\n", icache.compulsory_cnt + icache.conflict_cnt);
+	printf("\t  Miss rate with compulsory:\t%.2f%%\n", 
 			(icache.conflict_cnt + icache.compulsory_cnt)*100./icache.read_cnt);
 	printf("\t  Miss rate without compulsory: %.2f%%\n", 
 			icache.conflict_cnt*100./icache.read_cnt);  
+	if (dcache_info[0].num_blocks) {
+		printf("L1 D-Cache statistics:\n");
+		printf("\tNumber of reads performed:\t%d\n", dcache[0].read_cnt);
+		printf("\tWords read from memory:\t\t%d\n", dcache[0].lw_cnt);
+		printf("\tNumber of writes performed:\t%d\n", dcache[0].write_cnt);
+		printf("\tWords written to memory:\t%d\n", dcache[0].sw_cnt);
+		printf("\tRead misses:\n");
+		printf("\t  Compulsory misses:\t\t%d\n", dcache[0].compulsory_cnt);
+		if (dcache_info[0].associativity == 1)
+			printf("\t  Conflict misses:\t\t%d\n", dcache[0].conflict_cnt);
+		else
+			printf("\t  Capacity misses:\t\t%d\n", dcache[0].conflict_cnt);
+		printf("\t  Misses with compulsory:\t%d\n", dcache[0].compulsory_cnt 
+							  + dcache[0].conflict_cnt);
+		printf("\t  Miss rate with compulsory:\t%.2f%%\n",
+				(dcache[0].conflict_cnt + dcache[0].compulsory_cnt)
+				* 100./dcache[0].read_cnt);
+		printf("\t  Miss rate without compulsory: %.2f%%\n",
+				dcache[0].conflict_cnt * 100. / dcache[0].read_cnt);
+		printf("\tWrite Misses:\n");
+		printf("\t  Compulsory Misses:\t\t%d\n", dcache[0].compulsory_w_cnt);
+		printf("\t  Conflict Misses:\t\t%d\n", dcache[0].conflict_w_cnt);
+		printf("\t  Misses with compulsory:\t%d\n", dcache[0].compulsory_w_cnt
+							  + dcache[0].conflict_w_cnt);	
+		printf("\t  Miss rate with compulsory:\t%.2f%%\n",
+				(dcache[0].conflict_w_cnt + dcache[0].compulsory_w_cnt)
+				* 100. / dcache[0].write_cnt);
+		printf("\t  Miss rate without compulsory: %.2f%%\n",
+				dcache[0].conflict_w_cnt * 100. / dcache[0].write_cnt);
+	}
 }
 
 /*******************************************************************************
