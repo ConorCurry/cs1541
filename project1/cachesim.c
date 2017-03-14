@@ -129,16 +129,43 @@ void handle_ifetch_direct(addr_t address) {
 
 }
 
+void tick() {
+	/* Update times for LRU */
+	for (int i = 0; i < icache_info.associativity; i++) {
+		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
+			icache.blocks[i][j].last_used++;
+		}
+	}
+}
+
+Block *getLRU() {
+	Block *lru_block = icache.blocks[0];
+	for (int i = 0; i < icache_info.associativity; i++) {
+		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
+			if (icache.blocks[i][j].last_used > lru_block->last_used) {
+				lru_block = &icache.blocks[i][j];
+			}
+		}
+	}
+	return lru_block;
+}
+Block *getRandom() {
+	int repl_i = random() % icache_info.associativity;
+	int repl_j = random() % (icache_info.num_blocks / icache_info.associativity);
+	return &icache.blocks[repl_i][repl_j];
+}
+
 void handle_ifetch_assoc(addr_t address) {
 	int tag = (address >> tag_shift) & tag_mask;
 	Block *open_block = NULL;
+	tick();
 	/* Linear search for matching block */
 	/* Will also find an open block if one is available. */
 	for (int i = 0; i < icache_info.associativity; i++) {
 		for (int j = 0; j < icache_info.num_blocks / icache_info.associativity; j++) {
 			if (icache.blocks[i][j].tag == tag) {
 				/* Hit */
-				printf("wat");
+				icache.blocks[i][j].last_used = 0;
 				return;
 			}
 			if (!open_block && !icache.blocks[i][j].valid) {
@@ -146,7 +173,6 @@ void handle_ifetch_assoc(addr_t address) {
 			}
 		}
 	}
-	/* Miss */
 	if (open_block) {
 		/* Compulsory Miss */
 		*open_block = (Block) {.valid = 1, .tag = tag};
@@ -155,12 +181,13 @@ void handle_ifetch_assoc(addr_t address) {
 		return;
 	} else if (icache_info.replacement == Replacement_LRU) {
 		/* Conflict Miss - Do LRU replacement */
+		*getLRU() = (Block) {.valid = 1, .tag = tag};
+		icache.conflict_cnt++;
+		icache.lw_cnt += icache_info.words_per_block;
 		return;
 	} else {
 		/* Conflict Miss - Do random replacement */
-		int repl_i = random() % icache_info.associativity;
-		int repl_j = random() % (icache_info.num_blocks / icache_info.associativity);
-		icache.blocks[repl_i][repl_j] = (Block) {.valid = 1, .tag = tag};
+		*getRandom() = (Block) {.valid = 1, .tag = tag};
 		icache.conflict_cnt++;
 		icache.lw_cnt += icache_info.words_per_block;
 		return;
@@ -202,7 +229,10 @@ void print_statistics()
 	printf("\tWords read from memory: \t%d\n", icache.lw_cnt);
 	printf("\tRead misses:\n");
 	printf("\t  Compulsory misses: \t\t%d\n", icache.compulsory_cnt);
-	printf("\t  Conflict misses: \t\t%d\n", icache.conflict_cnt);
+	if (icache_info.associativity == 1)
+		printf("\t  Conflict misses: \t\t%d\n", icache.conflict_cnt);
+	else
+		printf("\t  Capacity misses: \t\t%d\n", icache.conflict_cnt);
 	printf("\t  Misses with compulsory: \t%d\n", icache.compulsory_cnt + icache.conflict_cnt);
 	printf("\t  Miss rate with compulsory: \t%.2f%%\n", 
 			(icache.conflict_cnt + icache.compulsory_cnt)*100./icache.read_cnt);

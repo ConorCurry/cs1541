@@ -104,7 +104,7 @@ typedef struct
 	char valid;
 	char dirty;
 	int tag;
-	/* This might hold additional statistics tracking data */
+	int last_used;
 } Block;
 
 typedef struct
