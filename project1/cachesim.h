@@ -111,5 +111,9 @@ typedef struct
 {
 	/* Starting as a direct-mapped implementation */
 	Block *blocks; 
+	int read_cnt;
+	int lw_cnt;
+	int compulsory_cnt;
+	int conflict_cnt;
 } Cache;
 #endif
