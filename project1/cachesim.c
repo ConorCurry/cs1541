@@ -103,11 +103,11 @@ void handle_ifetch(addr_t address) {
 		/* Either Hit or Conflict Miss */
 		if (cur_block->tag == tag) {
 			/* Hit */
-			printf("I_FETCH at %08lx was a " GREEN("HIT\n"), address);
+			// printf("I_FETCH at %08lx was a " GREEN("HIT\n"), address);
 		} else {
 			/* Conflict Miss */
 			*cur_block = (Block) {.valid = 1, .tag = tag};
-			printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
+			// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
 			iconflict_miss_cnt++;
 			iloadword_cnt += icache_info.words_per_block;
 		}
@@ -115,7 +115,7 @@ void handle_ifetch(addr_t address) {
 		/* Compulsory Miss */
 		/* We need to make a new block to put into the cache on a miss */
 		*cur_block = (Block) {.valid = 1, .tag = tag};
-		printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
+		// printf("I_FETCH at %08lx was a " RED("MISS\n"), address);
 		icompulsory_miss_cnt++;
 		iloadword_cnt += icache_info.words_per_block;
 	}
@@ -148,7 +148,14 @@ void print_statistics()
 {
 	/* Finally, after all the simulation happens, you have to show what the
 	results look like. Do that here.*/
-	printf("Stuff happened!!!!!\n");
+	printf("\nI-Cache statistics:\n");
+	printf("\tNumber of reads performed: \t%d\n", iread_cnt);
+	printf("\tWords read from memory: \t%d\n", iloadword_cnt);
+	printf("\tRead misses:\n");
+	printf("\t  Compulsory misses: \t\t%d\n", icompulsory_miss_cnt);
+	printf("\t  Conflict misses: \t\t%d\n", iconflict_miss_cnt);
+	printf("\t  Miss rate with compulsory: \t%.2f%%\n", icompulsory_miss_cnt*100./iread_cnt);
+	printf("\t  Miss rate with conflict: \t%.2f%%\n", iconflict_miss_cnt*100./iread_cnt);  
 }
 
 /*******************************************************************************
