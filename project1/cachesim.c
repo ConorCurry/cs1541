@@ -154,8 +154,10 @@ void print_statistics()
 	printf("\tRead misses:\n");
 	printf("\t  Compulsory misses: \t\t%d\n", icompulsory_miss_cnt);
 	printf("\t  Conflict misses: \t\t%d\n", iconflict_miss_cnt);
-	printf("\t  Miss rate with compulsory: \t%.2f%%\n", icompulsory_miss_cnt*100./iread_cnt);
-	printf("\t  Miss rate with conflict: \t%.2f%%\n", iconflict_miss_cnt*100./iread_cnt);  
+	printf("\t  Misses with compulsory: \t%d\n", icompulsory_miss_cnt + iconflict_miss_cnt);
+	printf("\t  Miss rate with compulsory: \t%.2f%%\n", 
+			(iconflict_miss_cnt + icompulsory_miss_cnt)*100./iread_cnt);
+	printf("\t  Miss rate without compulsory: %.2f%%\n", iconflict_miss_cnt*100./iread_cnt);  
 }
 
 /*******************************************************************************
