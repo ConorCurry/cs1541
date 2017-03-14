@@ -2,14 +2,8 @@
 #define _CACHESIM_H_
 
 /* Feel free to add any constants, enums, structs etc. that
-you need to this file! */
-typedef struct
-{
-	char valid;
-	char dirty;
-	int tag;
-	int tag_size;
-} block;
+you need to this file! But you should probably put them at the
+bottom so that you can use the types I've given you.*/
 
 /*******************************************************************************
 *
@@ -90,5 +84,19 @@ typedef struct
 } CacheInfo;
 
 void dump_cache_info();
+
+/*******************************************************************************
+*
+*
+*
+* DO NOT MODIFY ANYTHING ABOVE THIS LINE!
+*
+* But you should read the comments above.
+*
+*
+*
+*******************************************************************************/
+
+/* This is probably a better place to put your stuff. */
 
 #endif
