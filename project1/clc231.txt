@@ -1,0 +1,18 @@
+The branch I'm submitting includes a data cache implementation that had some side
+ effects that messed up the previously perfectly matching instruction cache output...
+I still have the other version but figure more stuff is implemented on this branch.
+Namely some data cache stuff.
+
+So instruction cache reads are slightly off from what they should be, but it isn't
+ often too different from the example outputs.
+
+For data caches, write-around on direct mapped caches works. The other combinations
+of write/allocate schemes aren't implemented.
+
+Did not get to the extra credit.
+
+Compiled using the gcc options that were provided by the project wiki.
+
+Thanks
+
+~/Conor

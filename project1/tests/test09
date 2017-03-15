@@ -1,0 +1,17 @@
+L1 D-Cache statistics:
+        Number of reads performed:      101867
+        Words read from memory:         173552
+        Number of writes performed:     49292
+        Words written to memory:        49292
+        Read misses:
+          Compulsory misses:            2
+          Capacity misses:              32251
+          Misses with compulsory:       32253
+          Miss rate with compulsory:    31.66%
+          Miss rate without compulsory: 31.66%
+        Write misses:
+          Compulsory misses:            6
+          Capacity misses:              11129
+          Misses with compulsory:       11135
+          Miss rate with compulsory:    22.59%
+          Miss rate without compulsory: 22.58%
