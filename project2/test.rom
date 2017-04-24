@@ -1,0 +1,126 @@
+v2.0 raw
+# to load this file into Logisim:
+# 1) redirect the output from the assembler to a file
+# 2) use the poke tool in Logisim and right-click the ROM component
+# 3) select Load Image menu option
+# 4) load the saved file
+17FC	# 0000: la	ab, 0xff0000              (reset)
+1401	# 
+04AE	# 0004: mov	sp, ab
+1000	# 0006: ldi	a, 0
+1001	# 0008: ldi	b, 0
+1002	# 000A: ldi	c, 0
+1003	# 000C: ldi	d, 0
+0404	# 000E: mov	e, a
+0405	# 0010: mov	f, a
+5C02	# 0012: call	clear_display
+5C54	# 0014: call	main
+0000	# 0016: halt
+17FE	# 0018: la	cd, 0xff0000              (clear_display)
+1403	# 
+1404	# 001C: ldiu	a, 1
+0C80	# 001E: st	[cd], a
+580F	# 0020: jmpr	ra
+0489	# 0022: mov	ef, cd              (puts)
+17FE	# 0024: la	cd, 0xff0002
+140B	# 
+1FCE	# 0028: push	ef              (puts_disp)
+0CE9	# 
+0890	# 002C: ld	a, [ef]              (_puts_loop)
+0401	# 002E: mov	b, a
+3881	# 0030: shr	b, 8
+4001	# 0032: cmpi	b, 0
+4408	# 0034: beq	_puts_end
+0C81	# 0036: st	[cd], b
+0401	# 0038: mov	b, a
+2BFD	# 003A: andi	b, 0xff
+4001	# 003C: cmpi	b, 0
+4403	# 003E: beq	_puts_end
+0C81	# 0040: st	[cd], b
+1C29	# 0042: addi	ef, 2
+57F3	# 0044: jmp	_puts_loop
+08E9	# 0046: pop	ef              (_puts_end)
+1C4E	# 
+580F	# 004A: jmpr	ra
+1428	# 004C: ldiu	a, 10              (newline)
+17FE	# 004E: la	cd, 0xff0002              (putc)
+140B	# 
+0C80	# 0052: st	[cd], a              (putc_disp)
+580F	# 0054: jmpr	ra
+17FE	# 0056: la	cd, 0xff0002              (put_nybble)
+140B	# 
+283D	# 005A: andi	b, 0xf              (put_nybble_disp)
+40A1	# 005C: cmpi	b, 10
+4C01	# 005E: blt	_noletter
+1C71	# 0060: addi	b, 7
+1D81	# 0062: addi	b, 0x18              (_noletter)
+1D81	# 0064: addi	b, 0x18
+0C81	# 0066: st	[cd], b
+580F	# 0068: jmpr	ra
+17FE	# 006A: la	cd, 0xff0002              (put_byte_hex)
+140B	# 
+1FCE	# 006E: push	ra              (put_byte_hex_disp)
+0CEF	# 
+0401	# 0072: mov	b, a
+3841	# 0074: shr	b, 4
+5FF1	# 0076: call	put_nybble_disp
+0401	# 0078: mov	b, a
+5FEF	# 007A: call	put_nybble_disp
+08EF	# 007C: pop	ra
+1C4E	# 
+580F	# 0080: jmpr	ra
+17FE	# 0082: la	cd, 0xff0002              (put_word_hex)
+140B	# 
+1FCE	# 0086: push	ra              (put_word_hex_disp)
+0CEF	# 
+0401	# 008A: mov	b, a
+38C1	# 008C: shr	b, 12
+5FE5	# 008E: call	put_nybble_disp
+0401	# 0090: mov	b, a
+3881	# 0092: shr	b, 8
+5FE2	# 0094: call	put_nybble_disp
+0401	# 0096: mov	b, a
+3841	# 0098: shr	b, 4
+5FDF	# 009A: call	put_nybble_disp
+0401	# 009C: mov	b, a
+5FDD	# 009E: call	put_nybble_disp
+08EF	# 00A0: pop	ra
+1C4E	# 
+580F	# 00A4: jmpr	ra
+1FCE	# 00A6: push	ef              (memcpy)
+0CE9	# 
+4000	# 00AA: cmpi	a, 0              (_memcpy_loop)
+4405	# 00AC: beq	_memcpy_loop_end
+0891	# 00AE: ld	b, [ef]
+0C81	# 00B0: st	[cd], b
+1C29	# 00B2: addi	ef, 2
+1C28	# 00B4: addi	cd, 2
+57F9	# 00B6: jmp	_memcpy_loop
+08E9	# 00B8: pop	ef              (_memcpy_loop_end)
+1C4E	# 
+580F	# 00BC: jmpr	ra
+1FCE	# 00BE: push	ra              (main)
+0CEF	# 
+1402	# 00C2: la	cd, msg
+1603	# 
+3483	# 
+5FAC	# 00C8: call	puts
+08EF	# 00CA: pop	ra
+1C4E	# 
+580F	# 00CE: jmpr	ra
+16280*0
+# ======================================
+# Begin data segment
+7965	# 8000: msg
+6168	# 
+2C20	# 
+6974	# 
+2773	# 
+2077	# 
+6F72	# 
+6B69	# 
+6E67	# 
+210A	# 
+0000	# 
+# ======================================
+# Begin global segment

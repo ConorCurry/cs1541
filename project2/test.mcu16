@@ -1,0 +1,240 @@
+;--------------------------------------------------------------------------------------------------
+; void reset()
+; When the CPU resets, this code is run.
+;--------------------------------------------------------------------------------------------------
+
+reset:
+	la	ab, 0xFF0000
+	mov	sp, ab
+
+	ldi	a, 0
+	ldi	b, 0
+	ldi	c, 0
+	ldi	d, 0
+	mov	e, a
+	mov	f, a
+
+	call	clear_display
+	call	main
+	halt
+
+;--------------------------------------------------------------------------------------------------
+; void clear_display()
+; Clears the display!
+; modifies a, c, d
+;--------------------------------------------------------------------------------------------------
+
+clear_display:
+	la	cd, 0xFF0000
+	ldiu	a, 1
+	st	[cd], a
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void puts(char* msg: cd)
+; Outputs a string to the display. Does not put a newline at the end.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+puts:
+	mov	ef, cd
+	; display data register is at 0xFF_0002
+	; writing a character to it outputs that character
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void puts_disp(char* msg: ef, void* disp: cd)
+; Same as puts, but display address is in cd, and message in ef.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+puts_disp:
+	push	ef
+	; have to load pair of chars, then shift/mask
+_puts_loop:
+	ld	a, [ef]
+	; big-endian so first byte is in MSBs of a
+	mov	b, a
+	shr	b, 8
+	cmpi	b, 0
+	beq	_puts_end
+	st	[cd], b
+
+	; second char
+	mov	b, a
+	andi	b, 0xFF
+	cmpi	b, 0
+	beq	_puts_end
+	st	[cd], b
+
+	; loooop
+	addi	ef, 2
+	jmp	_puts_loop
+
+_puts_end:
+	pop	ef
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void newline()
+; Outputs a newline to the display.
+; modifies a, c, d
+;--------------------------------------------------------------------------------------------------
+
+newline:
+	ldiu	a, 10
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void putc(char c: a)
+; Outputs a single character to the display.
+; modifies c, d
+;--------------------------------------------------------------------------------------------------
+
+putc:
+	la	cd, 0xFF0002
+
+;--------------------------------------------------------------------------------------------------
+; void putc_disp(char c: a, void* disp: cd)
+; Same as putc(), but display address is in cd.
+;--------------------------------------------------------------------------------------------------
+
+putc_disp:
+	st	[cd], a
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_nybble(char val: a)
+; Outputs a single hex digit to the display, whose value is in a.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_nybble:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_nybble_disp(char val: b, void* disp: cd)
+; Same as put_nybble(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_nybble_disp:
+	andi	b, 0xF
+	cmpi	b, 10
+	blt	_noletter
+	addi	b, 7
+_noletter:
+	addi	b, 0x18 ; can't do 0x30 cause 6-bit immediate is sign-extended...
+	addi	b, 0x18
+	st	[cd], b
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_byte_hex(char val: a)
+; Outputs a 2-digit hex representation of a byte to the display.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_byte_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_byte_hex_disp(char val: a, void* disp: cd)
+; Same as put_byte_hex(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_byte_hex_disp:
+	push	ra
+
+	; top nybble
+	mov	b, a
+	shr	b, 4
+	call	put_nybble_disp
+
+	; bottom nybble
+	mov	b, a
+	call	put_nybble_disp
+
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_word_hex(short val: a)
+; Outputs a 4-digit hex representation of a word to the display.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_word_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_word_hex_disp(short val: a, void* disp: cd)
+; Same as put_word_hex(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_word_hex_disp:
+	push	ra
+
+	mov	b, a
+	shr	b, 12
+	call	put_nybble_disp
+	mov	b, a
+	shr	b, 8
+	call	put_nybble_disp
+	mov	b, a
+	shr	b, 4
+	call	put_nybble_disp
+	mov	b, a
+	call	put_nybble_disp
+
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void memcpy(void* dest: cd, void* src: ef, int count: a)
+; Copies `count` WORDS from src to dest.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+memcpy:
+	push	ef
+_memcpy_loop:
+	cmpi	a, 0
+	beq	_memcpy_loop_end
+	ld	b, [ef]
+	st	[cd], b
+	addi	ef, 2
+	addi	cd, 2
+	jmp	_memcpy_loop
+_memcpy_loop_end:
+	pop	ef
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+;--------------------------------------------------------------------------------------------------
+
+.data
+; ROM data goes here.
+
+msg: .string "Yeah, it's working!\n"
+
+.global
+
+; RAM variables go here.
+
+.text
+; code goes here!
+main:
+	push	ra
+
+	la	cd, msg
+	call	puts
+
+	pop	ra
+	jmpr	ra
