@@ -7,12 +7,15 @@ function vtranslate(vlen, num16, v)::Int
 end
 
 function test(vlen, num16, bytes)
-	return [vtranslate(vlen, num16, v) for v in 0:((bytes/vlen) - num16)]
+	return [bin(vtranslate(vlen, num16, v)) for v in 0:((bytes/vlen) - num16)]
 end
 
-@show test(4, 4, 128)
-@show test(2, 4, 128)
-@show test(2, 2, 128)
-@show test(4, 16, 128)
-@show test(4, 8, 128)
-@show test(4, 0, 128)
+@show vtranslate(4, 4, 31)
+@show (vtranslate(4, 4, 27))
+
+@show test(4, 4, 63)
+@show test(2, 4, 63)
+@show test(2, 2, 63)
+@show test(4, 16, 63)
+@show test(4, 8, 63)
+@show test(4, 0, 63)
