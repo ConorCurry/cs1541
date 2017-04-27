@@ -147,53 +147,55 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <circ-port height="8" pin="110,180" width="8" x="46" y="96"/>
       <circ-port height="8" pin="110,290" width="8" x="46" y="116"/>
       <circ-port height="8" pin="110,370" width="8" x="46" y="136"/>
-      <circ-port height="10" pin="770,70" width="10" x="105" y="65"/>
-      <circ-port height="10" pin="770,160" width="10" x="105" y="85"/>
+      <circ-port height="10" pin="760,250" width="10" x="105" y="65"/>
+      <circ-port height="10" pin="760,340" width="10" x="105" y="85"/>
       <circ-port height="8" pin="110,60" width="8" x="56" y="46"/>
-      <circ-port height="10" pin="800,230" width="10" x="95" y="45"/>
-      <circ-port height="10" pin="600,150" width="10" x="105" y="125"/>
-      <circ-port height="10" pin="600,130" width="10" x="105" y="105"/>
+      <circ-port height="10" pin="790,410" width="10" x="95" y="45"/>
+      <circ-port height="10" pin="640,230" width="10" x="105" y="125"/>
+      <circ-port height="10" pin="640,210" width="10" x="105" y="105"/>
       <circ-port height="8" pin="110,30" width="8" x="56" y="146"/>
-      <circ-port height="8" pin="330,60" width="8" x="46" y="106"/>
       <circ-anchor facing="east" height="6" width="6" x="107" y="67"/>
     </appear>
-    <wire from="(550,30)" to="(550,40)"/>
+    <wire from="(590,110)" to="(590,120)"/>
+    <wire from="(550,110)" to="(550,120)"/>
+    <wire from="(280,90)" to="(280,160)"/>
+    <wire from="(640,320)" to="(640,330)"/>
     <wire from="(130,370)" to="(130,380)"/>
-    <wire from="(250,90)" to="(250,100)"/>
     <wire from="(300,320)" to="(350,320)"/>
     <wire from="(300,420)" to="(350,420)"/>
     <wire from="(110,490)" to="(110,500)"/>
-    <wire from="(470,30)" to="(470,40)"/>
-    <wire from="(460,160)" to="(460,170)"/>
-    <wire from="(510,30)" to="(510,40)"/>
+    <wire from="(460,320)" to="(460,330)"/>
+    <wire from="(510,110)" to="(510,120)"/>
+    <wire from="(500,240)" to="(500,250)"/>
     <wire from="(300,420)" to="(300,430)"/>
+    <wire from="(310,90)" to="(310,100)"/>
     <wire from="(370,490)" to="(370,500)"/>
     <wire from="(310,290)" to="(310,310)"/>
     <wire from="(310,430)" to="(310,450)"/>
-    <wire from="(580,240)" to="(580,270)"/>
-    <wire from="(500,240)" to="(500,270)"/>
+    <wire from="(550,320)" to="(550,400)"/>
     <wire from="(320,440)" to="(320,470)"/>
-    <wire from="(580,150)" to="(600,150)"/>
-    <wire from="(580,130)" to="(600,130)"/>
-    <wire from="(780,230)" to="(800,230)"/>
+    <wire from="(540,420)" to="(540,440)"/>
+    <wire from="(560,420)" to="(560,440)"/>
+    <wire from="(620,230)" to="(640,230)"/>
+    <wire from="(620,210)" to="(640,210)"/>
     <wire from="(320,300)" to="(350,300)"/>
     <wire from="(320,440)" to="(350,440)"/>
     <wire from="(330,250)" to="(330,290)"/>
     <wire from="(330,450)" to="(330,490)"/>
-    <wire from="(430,50)" to="(440,50)"/>
-    <wire from="(430,110)" to="(440,110)"/>
-    <wire from="(230,90)" to="(230,140)"/>
+    <wire from="(470,130)" to="(480,130)"/>
+    <wire from="(470,190)" to="(480,190)"/>
     <wire from="(290,310)" to="(300,310)"/>
     <wire from="(310,270)" to="(320,270)"/>
     <wire from="(290,430)" to="(300,430)"/>
     <wire from="(310,470)" to="(320,470)"/>
+    <wire from="(320,60)" to="(330,60)"/>
     <wire from="(340,280)" to="(350,280)"/>
     <wire from="(330,230)" to="(340,230)"/>
     <wire from="(340,460)" to="(350,460)"/>
     <wire from="(330,510)" to="(340,510)"/>
     <wire from="(130,370)" to="(140,370)"/>
     <wire from="(140,500)" to="(150,500)"/>
-    <wire from="(260,60)" to="(270,60)"/>
+    <wire from="(290,90)" to="(290,140)"/>
     <wire from="(110,290)" to="(120,290)"/>
     <wire from="(110,90)" to="(120,90)"/>
     <wire from="(110,30)" to="(120,30)"/>
@@ -202,39 +204,38 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(100,440)" to="(110,440)"/>
     <wire from="(110,490)" to="(120,490)"/>
     <wire from="(340,460)" to="(340,510)"/>
-    <wire from="(760,160)" to="(770,160)"/>
-    <wire from="(520,360)" to="(530,360)"/>
+    <wire from="(750,250)" to="(760,250)"/>
+    <wire from="(560,440)" to="(570,440)"/>
     <wire from="(290,330)" to="(350,330)"/>
     <wire from="(290,410)" to="(350,410)"/>
-    <wire from="(550,160)" to="(550,170)"/>
-    <wire from="(630,240)" to="(630,250)"/>
-    <wire from="(210,90)" to="(210,160)"/>
+    <wire from="(550,240)" to="(550,250)"/>
+    <wire from="(590,240)" to="(590,250)"/>
+    <wire from="(270,180)" to="(320,180)"/>
     <wire from="(110,440)" to="(110,450)"/>
-    <wire from="(450,240)" to="(450,250)"/>
-    <wire from="(210,160)" to="(260,160)"/>
-    <wire from="(510,160)" to="(510,170)"/>
     <wire from="(300,310)" to="(300,320)"/>
     <wire from="(370,360)" to="(370,370)"/>
-    <wire from="(540,240)" to="(540,320)"/>
+    <wire from="(590,320)" to="(590,350)"/>
+    <wire from="(510,320)" to="(510,350)"/>
     <wire from="(320,270)" to="(320,300)"/>
-    <wire from="(530,340)" to="(530,360)"/>
-    <wire from="(550,340)" to="(550,360)"/>
+    <wire from="(300,90)" to="(300,120)"/>
     <wire from="(310,310)" to="(350,310)"/>
     <wire from="(310,430)" to="(350,430)"/>
-    <wire from="(240,90)" to="(240,120)"/>
-    <wire from="(230,140)" to="(260,140)"/>
+    <wire from="(280,160)" to="(320,160)"/>
+    <wire from="(270,90)" to="(270,180)"/>
+    <wire from="(290,140)" to="(320,140)"/>
+    <wire from="(770,410)" to="(790,410)"/>
+    <wire from="(300,120)" to="(320,120)"/>
     <wire from="(330,290)" to="(350,290)"/>
     <wire from="(330,450)" to="(350,450)"/>
-    <wire from="(240,120)" to="(260,120)"/>
-    <wire from="(430,80)" to="(440,80)"/>
+    <wire from="(470,160)" to="(480,160)"/>
     <wire from="(320,250)" to="(330,250)"/>
     <wire from="(300,290)" to="(310,290)"/>
     <wire from="(300,450)" to="(310,450)"/>
+    <wire from="(310,100)" to="(320,100)"/>
     <wire from="(320,490)" to="(330,490)"/>
     <wire from="(130,380)" to="(140,380)"/>
     <wire from="(140,450)" to="(150,450)"/>
-    <wire from="(190,60)" to="(200,60)"/>
-    <wire from="(250,100)" to="(260,100)"/>
+    <wire from="(250,60)" to="(260,60)"/>
     <wire from="(50,440)" to="(60,440)"/>
     <wire from="(110,180)" to="(120,180)"/>
     <wire from="(110,120)" to="(120,120)"/>
@@ -243,27 +244,25 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(110,440)" to="(120,440)"/>
     <wire from="(100,490)" to="(110,490)"/>
     <wire from="(340,230)" to="(340,280)"/>
-    <wire from="(760,70)" to="(770,70)"/>
-    <wire from="(580,70)" to="(590,70)"/>
-    <wire from="(580,50)" to="(590,50)"/>
-    <wire from="(580,110)" to="(590,110)"/>
-    <wire from="(580,90)" to="(590,90)"/>
-    <wire from="(550,360)" to="(560,360)"/>
+    <wire from="(750,340)" to="(760,340)"/>
+    <wire from="(530,440)" to="(540,440)"/>
+    <wire from="(620,150)" to="(630,150)"/>
+    <wire from="(620,130)" to="(630,130)"/>
+    <wire from="(620,190)" to="(630,190)"/>
+    <wire from="(620,170)" to="(630,170)"/>
     <comp lib="0" loc="(310,470)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="width" val="32"/>
       <a name="label" val="RegOutEx"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(550,30)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="label" val="WEn"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(510,170)" name="Tunnel">
-      <a name="facing" val="north"/>
-      <a name="label" val="PackOut"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    <comp lib="0" loc="(640,230)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="VBus64"/>
+      <a name="labelloc" val="east"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(320,250)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -271,24 +270,33 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="ImmS"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(330,60)" name="Pin">
-      <a name="width" val="3"/>
-      <a name="tristate" val="false"/>
+    <comp lib="0" loc="(630,190)" name="Tunnel">
+      <a name="width" val="32"/>
+      <a name="label" val="vrsOutLo"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
+    <comp lib="0" loc="(320,140)" name="Tunnel">
+      <a name="label" val="PackIn"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
     <comp lib="0" loc="(110,90)" name="Pin">
       <a name="width" val="5"/>
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(450,240)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrdOutHi"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
     <comp lib="2" loc="(390,450)" name="Multiplexer">
       <a name="select" val="3"/>
       <a name="width" val="32"/>
       <a name="enable" val="false"/>
+    </comp>
+    <comp lib="0" loc="(550,110)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="width" val="32"/>
+      <a name="label" val="InLo"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    </comp>
+    <comp lib="0" loc="(330,60)" name="Tunnel">
+      <a name="label" val="WEn"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
     <comp lib="0" loc="(100,440)" name="Bit Extender">
       <a name="in_width" val="5"/>
@@ -335,37 +343,34 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="bit30" val="1"/>
       <a name="bit31" val="1"/>
     </comp>
-    <comp loc="(230,30)" name="VRegCtrl">
-      <a name="facing" val="south"/>
-      <a name="labelfont" val="Ubuntu Mono plain 12"/>
-    </comp>
-    <comp lib="0" loc="(260,100)" name="Tunnel">
+    <comp lib="0" loc="(320,100)" name="Tunnel">
       <a name="label" val="PackOut"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
-    <comp lib="0" loc="(260,120)" name="Tunnel">
-      <a name="width" val="3"/>
-      <a name="label" val="DataSrc"/>
+    <comp loc="(480,130)" name="VReg">
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(590,250)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="PackIn"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
-    <comp lib="0" loc="(540,240)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="3"/>
-      <a name="label" val="ALUop"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
+    <comp lib="0" loc="(550,250)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="PackOut"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
-    <comp lib="0" loc="(430,110)" name="Tunnel">
+    <comp lib="0" loc="(470,130)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="width" val="5"/>
-      <a name="label" val="vrs"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
+      <a name="label" val="clk"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
-    <comp lib="0" loc="(770,70)" name="Pin">
+    <comp lib="0" loc="(760,340)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="width" val="32"/>
       <a name="tristate" val="false"/>
-      <a name="label" val="VRegOutHi"/>
+      <a name="label" val="VRegOutLo"/>
       <a name="labelloc" val="east"/>
     </comp>
     <comp lib="0" loc="(50,490)" name="Tunnel">
@@ -374,16 +379,20 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="vrs"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
+    <comp loc="(560,420)" name="VALU"/>
     <comp lib="0" loc="(100,490)" name="Bit Extender">
       <a name="in_width" val="5"/>
     </comp>
-    <comp lib="0" loc="(800,230)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="tristate" val="false"/>
-      <a name="label" val="VPUError"/>
-      <a name="labelloc" val="east"/>
-      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    <comp lib="0" loc="(630,170)" name="Tunnel">
+      <a name="width" val="32"/>
+      <a name="label" val="vrsOutHi"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
+    <comp lib="0" loc="(590,320)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="width" val="32"/>
+      <a name="label" val="vrsOutLo"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(160,380)" name="Splitter">
       <a name="facing" val="west"/>
@@ -421,15 +430,9 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="bit30" val="1"/>
       <a name="bit31" val="1"/>
     </comp>
-    <comp lib="0" loc="(590,90)" name="Tunnel">
+    <comp lib="0" loc="(630,130)" name="Tunnel">
       <a name="width" val="32"/>
-      <a name="label" val="vrsOutHi"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(520,360)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="width" val="32"/>
-      <a name="label" val="ALUOutLo"/>
+      <a name="label" val="vrdOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(290,330)" name="Tunnel">
@@ -438,23 +441,49 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="vrsOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
+    <comp lib="0" loc="(320,120)" name="Tunnel">
+      <a name="width" val="3"/>
+      <a name="label" val="DataSrc"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    </comp>
+    <comp loc="(260,60)" name="VRegCtrl">
+      <a name="facing" val="south"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
     <comp lib="0" loc="(120,90)" name="Tunnel">
       <a name="width" val="5"/>
       <a name="label" val="vrd"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(560,360)" name="Tunnel">
+    <comp lib="0" loc="(510,110)" name="Tunnel">
+      <a name="facing" val="south"/>
       <a name="width" val="32"/>
-      <a name="label" val="ALUOutHi"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
+      <a name="label" val="InHi"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
     <comp lib="0" loc="(110,30)" name="Pin">
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(550,170)" name="Tunnel">
+    <comp lib="0" loc="(500,250)" name="Tunnel">
       <a name="facing" val="north"/>
-      <a name="label" val="PackIn"/>
+      <a name="label" val="cfg"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    </comp>
+    <comp lib="0" loc="(510,320)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="width" val="32"/>
+      <a name="label" val="vrdOutLo"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
+    <comp lib="0" loc="(590,110)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="label" val="WEn"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    </comp>
+    <comp lib="0" loc="(320,160)" name="Tunnel">
+      <a name="width" val="3"/>
+      <a name="label" val="ALUop"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(120,290)" name="Tunnel">
       <a name="width" val="32"/>
@@ -465,23 +494,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="width" val="6"/>
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(760,160)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrdOutLo"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(260,160)" name="Tunnel">
-      <a name="label" val="cfg"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(500,240)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrdOutLo"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(780,230)" name="Constant">
+    <comp lib="0" loc="(770,410)" name="Constant">
       <a name="value" val="0x0"/>
     </comp>
     <comp lib="0" loc="(110,290)" name="Pin">
@@ -491,21 +504,28 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="labelloc" val="north"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="0" loc="(470,190)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="width" val="5"/>
+      <a name="label" val="vrs"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
     <comp lib="0" loc="(370,370)" name="Tunnel">
       <a name="facing" val="north"/>
       <a name="width" val="3"/>
       <a name="label" val="DataSrc"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
-    <comp lib="0" loc="(430,80)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="width" val="5"/>
-      <a name="label" val="vrd"/>
+    <comp lib="0" loc="(460,320)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="width" val="32"/>
+      <a name="label" val="vrdOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(330,60)" name="Tunnel">
-      <a name="width" val="3"/>
-      <a name="label" val="ALUop"/>
+    <comp lib="0" loc="(530,440)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="width" val="32"/>
+      <a name="label" val="ALUOutLo"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(300,290)" name="Tunnel">
@@ -531,6 +551,10 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="RAMOutLo"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
+    <comp lib="0" loc="(320,180)" name="Tunnel">
+      <a name="label" val="cfg"/>
+      <a name="labelfont" val="Ubuntu Mono plain 10"/>
+    </comp>
     <comp lib="0" loc="(150,450)" name="Tunnel">
       <a name="width" val="32"/>
       <a name="label" val="ImmS"/>
@@ -540,10 +564,28 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="clk"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
+    <comp lib="0" loc="(570,440)" name="Tunnel">
+      <a name="width" val="32"/>
+      <a name="label" val="ALUOutHi"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
+    <comp lib="0" loc="(640,210)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="VBus32"/>
+      <a name="labelloc" val="east"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
     <comp lib="0" loc="(50,440)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="width" val="5"/>
       <a name="label" val="vrs"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
+    <comp lib="0" loc="(630,150)" name="Tunnel">
+      <a name="width" val="32"/>
+      <a name="label" val="vrdOutLo"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(370,500)" name="Tunnel">
@@ -563,6 +605,12 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="InHi"/>
       <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
+    <comp lib="0" loc="(250,60)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="width" val="6"/>
+      <a name="label" val="vop"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
     <comp lib="0" loc="(390,450)" name="Tunnel">
       <a name="width" val="32"/>
       <a name="label" val="InLo"/>
@@ -573,32 +621,9 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="ImmZ"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(460,170)" name="Tunnel">
-      <a name="facing" val="north"/>
-      <a name="label" val="cfg"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(760,70)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrdOutHi"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(580,240)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrsOutLo"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
     <comp lib="0" loc="(120,60)" name="Tunnel">
       <a name="width" val="6"/>
       <a name="label" val="vop"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(630,240)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="vrsOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(110,370)" name="Pin">
@@ -607,6 +632,12 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="RegOut"/>
       <a name="labelloc" val="south"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(750,250)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="width" val="32"/>
+      <a name="label" val="vrdOutHi"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(110,370)" name="Splitter">
       <a name="fanout" val="1"/>
@@ -636,26 +667,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="bit22" val="none"/>
       <a name="bit23" val="none"/>
     </comp>
-    <comp lib="0" loc="(590,50)" name="Tunnel">
+    <comp lib="0" loc="(640,320)" name="Tunnel">
+      <a name="facing" val="south"/>
       <a name="width" val="32"/>
-      <a name="label" val="vrdOutHi"/>
+      <a name="label" val="vrsOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp loc="(440,50)" name="VReg">
-      <a name="labelfont" val="Ubuntu Mono plain 12"/>
-    </comp>
-    <comp lib="0" loc="(590,110)" name="Tunnel">
-      <a name="width" val="32"/>
-      <a name="label" val="vrsOutLo"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(600,150)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="tristate" val="false"/>
-      <a name="label" val="VBus64"/>
-      <a name="labelloc" val="east"/>
-      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(110,180)" name="Pin">
       <a name="width" val="32"/>
@@ -664,39 +680,27 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="labelloc" val="south"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
-    <comp lib="0" loc="(510,30)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="InLo"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(270,60)" name="Tunnel">
-      <a name="label" val="WEn"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(190,60)" name="Tunnel">
+    <comp lib="0" loc="(470,160)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="width" val="6"/>
-      <a name="label" val="vop"/>
+      <a name="width" val="5"/>
+      <a name="label" val="vrd"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(590,70)" name="Tunnel">
-      <a name="width" val="32"/>
-      <a name="label" val="vrdOutLo"/>
-      <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(260,140)" name="Tunnel">
-      <a name="label" val="PackIn"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp loc="(550,340)" name="VALU"/>
-    <comp lib="0" loc="(600,130)" name="Pin">
+    <comp lib="0" loc="(790,410)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="tristate" val="false"/>
-      <a name="label" val="VBus32"/>
+      <a name="label" val="VPUError"/>
       <a name="labelloc" val="east"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(760,250)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="width" val="32"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="VRegOutHi"/>
+      <a name="labelloc" val="east"/>
     </comp>
     <comp lib="0" loc="(110,120)" name="Pin">
       <a name="width" val="5"/>
@@ -713,19 +717,23 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="width" val="32"/>
       <a name="enable" val="false"/>
     </comp>
+    <comp lib="0" loc="(750,340)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="width" val="32"/>
+      <a name="label" val="vrdOutLo"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
+    </comp>
     <comp lib="0" loc="(290,310)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="width" val="32"/>
       <a name="label" val="ALUOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
-    <comp lib="0" loc="(770,160)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="width" val="32"/>
-      <a name="tristate" val="false"/>
-      <a name="label" val="VRegOutLo"/>
-      <a name="labelloc" val="east"/>
+    <comp lib="0" loc="(550,320)" name="Tunnel">
+      <a name="facing" val="south"/>
+      <a name="width" val="3"/>
+      <a name="label" val="ALUop"/>
+      <a name="labelfont" val="SansSerif plain 8"/>
     </comp>
     <comp lib="0" loc="(310,270)" name="Tunnel">
       <a name="facing" val="east"/>
@@ -785,17 +793,6 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="width" val="32"/>
       <a name="label" val="RAMOutHi"/>
       <a name="labelfont" val="SansSerif plain 8"/>
-    </comp>
-    <comp lib="0" loc="(430,50)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="label" val="clk"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
-    </comp>
-    <comp lib="0" loc="(470,30)" name="Tunnel">
-      <a name="facing" val="south"/>
-      <a name="width" val="32"/>
-      <a name="label" val="InHi"/>
-      <a name="labelfont" val="Ubuntu Mono plain 10"/>
     </comp>
   </circuit>
   <circuit name="VRegRow">
@@ -3351,14 +3348,19 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabelfont" val="SansSerif plain 12"/>
     <appear>
       <rect fill="none" height="60" rx="10" ry="10" stroke="#000000" width="60" x="50" y="50"/>
-      <circ-port height="8" pin="90,50" width="8" x="76" y="106"/>
-      <circ-port height="10" pin="620,70" width="10" x="105" y="95"/>
-      <circ-port height="10" pin="620,180" width="10" x="75" y="45"/>
-      <circ-port height="10" pin="620,120" width="10" x="105" y="55"/>
-      <circ-port height="10" pin="620,260" width="10" x="105" y="75"/>
-      <circ-port height="10" pin="620,350" width="10" x="105" y="65"/>
-      <circ-anchor facing="east" height="6" width="6" x="47" y="77"/>
+      <text font-family="Ubuntu Mono" font-size="12" font-style="italic" font-weight="bold" text-anchor="middle" x="80" y="83">VCtrl</text>
+      <circ-port height="8" pin="90,50" width="8" x="46" y="76"/>
+      <circ-port height="10" pin="620,70" width="10" x="55" y="105"/>
+      <circ-port height="10" pin="620,180" width="10" x="105" y="75"/>
+      <circ-port height="10" pin="620,120" width="10" x="95" y="105"/>
+      <circ-port height="10" pin="620,260" width="10" x="75" y="105"/>
+      <circ-port height="10" pin="620,350" width="10" x="85" y="105"/>
+      <circ-port height="10" pin="620,540" width="10" x="65" y="105"/>
+      <circ-anchor facing="south" height="6" width="6" x="47" y="77"/>
     </appear>
+    <wire from="(530,610)" to="(530,620)"/>
+    <wire from="(530,450)" to="(530,460)"/>
+    <wire from="(530,530)" to="(530,540)"/>
     <wire from="(200,380)" to="(250,380)"/>
     <wire from="(200,300)" to="(250,300)"/>
     <wire from="(200,340)" to="(250,340)"/>
@@ -3375,6 +3377,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(200,260)" to="(250,260)"/>
     <wire from="(200,220)" to="(250,220)"/>
     <wire from="(200,180)" to="(250,180)"/>
+    <wire from="(600,570)" to="(600,640)"/>
     <wire from="(530,160)" to="(570,160)"/>
     <wire from="(530,200)" to="(570,200)"/>
     <wire from="(600,380)" to="(600,410)"/>
@@ -3398,6 +3401,12 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(130,570)" to="(160,570)"/>
     <wire from="(130,610)" to="(160,610)"/>
     <wire from="(130,650)" to="(160,650)"/>
+    <wire from="(520,470)" to="(540,470)"/>
+    <wire from="(520,490)" to="(540,490)"/>
+    <wire from="(520,550)" to="(540,550)"/>
+    <wire from="(520,570)" to="(540,570)"/>
+    <wire from="(520,630)" to="(540,630)"/>
+    <wire from="(520,650)" to="(540,650)"/>
     <wire from="(130,50)" to="(130,90)"/>
     <wire from="(130,290)" to="(130,330)"/>
     <wire from="(130,250)" to="(130,290)"/>
@@ -3418,11 +3427,30 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(590,330)" to="(600,330)"/>
     <wire from="(590,410)" to="(600,410)"/>
     <wire from="(590,370)" to="(600,370)"/>
+    <wire from="(530,580)" to="(530,590)"/>
+    <wire from="(530,660)" to="(530,670)"/>
+    <wire from="(530,500)" to="(530,510)"/>
+    <wire from="(600,480)" to="(600,550)"/>
     <wire from="(530,250)" to="(570,250)"/>
     <wire from="(530,270)" to="(570,270)"/>
     <wire from="(600,330)" to="(600,360)"/>
     <wire from="(90,50)" to="(130,50)"/>
     <wire from="(480,130)" to="(490,130)"/>
+    <wire from="(530,460)" to="(540,460)"/>
+    <wire from="(520,530)" to="(530,530)"/>
+    <wire from="(520,450)" to="(530,450)"/>
+    <wire from="(530,500)" to="(540,500)"/>
+    <wire from="(520,510)" to="(530,510)"/>
+    <wire from="(520,590)" to="(530,590)"/>
+    <wire from="(520,610)" to="(530,610)"/>
+    <wire from="(520,670)" to="(530,670)"/>
+    <wire from="(530,540)" to="(540,540)"/>
+    <wire from="(530,580)" to="(540,580)"/>
+    <wire from="(530,620)" to="(540,620)"/>
+    <wire from="(530,660)" to="(540,660)"/>
+    <wire from="(590,480)" to="(600,480)"/>
+    <wire from="(590,640)" to="(600,640)"/>
+    <wire from="(590,560)" to="(600,560)"/>
     <comp lib="0" loc="(160,430)" name="Constant">
       <a name="width" val="6"/>
       <a name="value" val="0x29"/>
@@ -3454,6 +3482,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="6" loc="(227,449)" name="Text">
       <a name="text" val="vmov"/>
       <a name="font" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(520,570)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vb2ws"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="6" loc="(227,129)" name="Text">
       <a name="text" val="sv"/>
@@ -3490,6 +3523,9 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="lvr"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="1" loc="(590,480)" name="OR Gate">
+      <a name="inputs" val="4"/>
+    </comp>
     <comp lib="0" loc="(370,140)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="vadd"/>
@@ -3518,6 +3554,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="text" val="vw2bh"/>
       <a name="font" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="0" loc="(520,530)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vmul"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
     <comp lib="0" loc="(570,210)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="vmov"/>
@@ -3540,9 +3581,17 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="width" val="6"/>
       <a name="value" val="0x23"/>
     </comp>
+    <comp lib="1" loc="(590,560)" name="OR Gate">
+      <a name="inputs" val="4"/>
+    </comp>
     <comp lib="0" loc="(570,260)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="vmov"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(520,490)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vb2ws"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="6" loc="(226,488)" name="Text">
@@ -3570,6 +3619,9 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="text" val="vdiv"/>
       <a name="font" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="1" loc="(590,640)" name="OR Gate">
+      <a name="inputs" val="4"/>
+    </comp>
     <comp lib="0" loc="(250,100)" name="Tunnel">
       <a name="label" val="lv"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
@@ -3577,6 +3629,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="3" loc="(200,420)" name="Comparator">
       <a name="width" val="6"/>
       <a name="mode" val="unsigned"/>
+    </comp>
+    <comp lib="0" loc="(520,650)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vw2bl"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(160,350)" name="Constant">
       <a name="width" val="6"/>
@@ -3630,6 +3687,16 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="lvr"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="0" loc="(520,510)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vb2wz"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(520,630)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vdiv"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
     <comp lib="1" loc="(620,180)" name="OR Gate">
       <a name="inputs" val="6"/>
     </comp>
@@ -3640,6 +3707,15 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="0" loc="(560,340)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="vALU"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(620,540)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="width" val="3"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="ALUop"/>
+      <a name="labelloc" val="east"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(530,410)" name="Tunnel">
@@ -3659,6 +3735,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="3" loc="(200,460)" name="Comparator">
       <a name="width" val="6"/>
       <a name="mode" val="unsigned"/>
+    </comp>
+    <comp lib="0" loc="(520,610)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vsub"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="6" loc="(228,567)" name="Text">
       <a name="text" val="vmul"/>
@@ -3681,6 +3762,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="label" val="vmul"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
+    <comp lib="0" loc="(520,470)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vw2bl"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
     <comp lib="0" loc="(160,270)" name="Constant">
       <a name="width" val="6"/>
       <a name="value" val="0x25"/>
@@ -3692,6 +3778,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="0" loc="(160,630)" name="Constant">
       <a name="width" val="6"/>
       <a name="value" val="0x2e"/>
+    </comp>
+    <comp lib="0" loc="(520,590)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vb2wz"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(620,350)" name="Pin">
       <a name="facing" val="west"/>
@@ -3708,6 +3799,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     </comp>
     <comp lib="0" loc="(250,500)" name="Tunnel">
       <a name="label" val="vadd"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(520,450)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vw2bh"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="6" loc="(226,649)" name="Text">
@@ -3782,6 +3878,11 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="6" loc="(231,408)" name="Text">
       <a name="text" val="vb2wz"/>
       <a name="font" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(520,670)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vb2wz"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="1" loc="(590,410)" name="OR Gate">
       <a name="size" val="30"/>
@@ -3870,6 +3971,18 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="0" loc="(530,250)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="lvi"/>
+      <a name="labelfont" val="Ubuntu Mono plain 12"/>
+    </comp>
+    <comp lib="0" loc="(620,540)" name="Splitter">
+      <a name="facing" val="west"/>
+      <a name="fanout" val="3"/>
+      <a name="incoming" val="3"/>
+      <a name="bit0" val="2"/>
+      <a name="bit2" val="0"/>
+    </comp>
+    <comp lib="0" loc="(520,550)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="vdiv"/>
       <a name="labelfont" val="Ubuntu Mono plain 12"/>
     </comp>
     <comp lib="0" loc="(250,140)" name="Tunnel">
