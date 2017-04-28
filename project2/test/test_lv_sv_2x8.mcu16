@@ -377,83 +377,88 @@ _memcpy_from_ROM_loop_end:
 main:
 	push	ra
 
-	call	test_4x16
+	call	test_2x8
 
 	pop	ra
 	jmpr	ra
 
-.data
-vec4x16_start_msg: .string "Test: 4x16 lv/sv. Loading RAM..."
-vec4x16_expect_msg: .string "done.\nExpect:\n0000 0001 0002 0003\n0004 0005 0006 0007\n0008 0009 000A 000B\n000C 000D 000E 000F\n--------------\n"
+;--------------------------------------------------------------------------------------------------
+; Test 2x8 lv/sv.
+;--------------------------------------------------------------------------------------------------
 
-vec4x16_data:
-	.vec4x16 0xc 0xd 0xe 0xf
-	.vec4x16 0x8 0x9 0xa 0xb
-	.vec4x16 0x4 0x5 0x6 0x7
-	.vec4x16 0x0 0x1 0x2 0x3
-vec4x16_data_end: .word 0
+.data
+vec2x8_start_msg: .string "Test: 2x8 lv/sv. Loading RAM..."
+vec2x8_expect_msg: .string "done.\nExpect:\n00 01\n02 03\n04 05\n06 07\n--------------\n"
+
+vec2x8_data:
+	.vec2x8 6 7
+	.vec2x8 4 5
+	.vec2x8 2 3
+	.vec2x8 0 1
+vec2x8_data_end: .word 0
 
 .global
-vec4x16_var0: .vec4x16
-vec4x16_var1: .vec4x16
-vec4x16_var2: .vec4x16
-vec4x16_var3: .vec4x16
-vec4x16_var4: .vec4x16
-vec4x16_var5: .vec4x16
-vec4x16_var6: .vec4x16
-vec4x16_var7: .vec4x16
+vec2x8_var0: .vec2x8
+vec2x8_var1: .vec2x8
+vec2x8_var2: .vec2x8
+vec2x8_var3: .vec2x8
+vec2x8_var4: .vec2x8
+vec2x8_var5: .vec2x8
+vec2x8_var6: .vec2x8
+vec2x8_var7: .vec2x8
 
 .text
-test_4x16:
+test_2x8:
 	push	ra
 
 	; start message.
-	la	ab, vec4x16_start_msg
+	la	ab, vec2x8_start_msg
 	call	puts
 
 	; copy data from ROM to RAM
-	la	a, vec4x16_data_end
-	la	b, vec4x16_data
+	la	a, vec2x8_data_end
+	la	b, vec2x8_data
 	sub	a, b
-	la	cd, vec4x16_var0
-	la	b, vec4x16_data
+	shr	a, 1
+	la	cd, vec2x8_var0
+	la	b, vec2x8_data
 	call	memcpy_from_ROM
 
 	; expectation message.
-	la	ab, vec4x16_expect_msg
+	la	ab, vec2x8_expect_msg
 	call	puts
 
 	; load and store the stuff!
-	vcfg	4, 4
-	la	ab, vec4x16_var0
+	vcfg	0, 2
+	la	ab, vec2x8_var0
 	lv	v0, [ab]
-	addi	ab, 8
+	addi	ab, 2
 	lv	v1, [ab]
-	addi	ab, 8
+	addi	ab, 2
 	lv	v2, [ab]
-	addi	ab, 8
+	addi	ab, 2
 	lv	v3, [ab]
-	la	ab, vec4x16_var7
+	la	ab, vec2x8_var7
 	sv	[ab], v0
-	addi	ab, -8
+	addi	ab, -2
 	sv	[ab], v1
-	addi	ab, -8
+	addi	ab, -2
 	sv	[ab], v2
-	addi	ab, -8
+	addi	ab, -2
 	sv	[ab], v3
 
 	; print out the contents of the variables.
-	la	ab, vec4x16_var4
-	call	put_vec4x16_hex
+	la	ab, vec2x8_var4
+	call	put_vec2x8_hex
 	call	newline
-	la	ab, vec4x16_var5
-	call	put_vec4x16_hex
+	la	ab, vec2x8_var5
+	call	put_vec2x8_hex
 	call	newline
-	la	ab, vec4x16_var6
-	call	put_vec4x16_hex
+	la	ab, vec2x8_var6
+	call	put_vec2x8_hex
 	call	newline
-	la	ab, vec4x16_var7
-	call	put_vec4x16_hex
+	la	ab, vec2x8_var7
+	call	put_vec2x8_hex
 	call	newline
 
 	pop	ra

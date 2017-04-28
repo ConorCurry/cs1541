@@ -200,93 +200,94 @@ v2.0 raw
 580F	# 0182: jmpr	ra
 1FCE	# 0184: push	ra              (main)
 0CEF	# 
-5C03	# 0188: call	test_4x16
+5C03	# 0188: call	test_4x8
 08EF	# 018A: pop	ra
 1C4E	# 
 580F	# 018E: jmpr	ra
-1FCE	# 0190: push	ra              (test_4x16)
+1FCE	# 0190: push	ra              (test_4x8)
 0CEF	# 
-1400	# 0194: la	ab, vec4x16_start_msg
+1400	# 0194: la	ab, vec4x8_start_msg
 1601	# 
 3481	# 
 5F43	# 019A: call	puts
-1600	# 019C: la	a, vec4x16_data_end
+1600	# 019C: la	a, vec4x8_data_end
 3480	# 
-32C8	# 
-1601	# 01A2: la	b, vec4x16_data
+3208	# 
+1601	# 01A2: la	b, vec4x8_data
 3481	# 
-3249	# 
+31C9	# 
 2010	# 01A8: sub	a, b
-1406	# 01AA: la	cd, vec4x16_var0
+3810	# 01AA: shr	a, 1
+1406	# 01AC: la	cd, vec4x8_var0
 1403	# 
-1601	# 01AE: la	b, vec4x16_data
+1601	# 01B0: la	b, vec4x8_data
 3481	# 
-3249	# 
-5FD8	# 01B4: call	memcpy_from_ROM
-1400	# 01B6: la	ab, vec4x16_expect_msg
+31C9	# 
+5FD7	# 01B6: call	memcpy_from_ROM
+1400	# 01B8: la	ab, vec4x8_expect_msg
 1601	# 
 3481	# 
 3089	# 
-5F31	# 01BE: call	puts
-8084	# 01C0: vcfg	4, 4
-1404	# 01C2: la	ab, vec4x16_var0
+5F30	# 01C0: call	puts
+8080	# 01C2: vcfg	0, 4
+1404	# 01C4: la	ab, vec4x8_var0
 1401	# 
-8540	# 01C6: lv	v0, [ab]
-1C8A	# 01C8: addi	ab, 8
-8541	# 01CA: lv	v1, [ab]
-1C8A	# 01CC: addi	ab, 8
-8542	# 01CE: lv	v2, [ab]
-1C8A	# 01D0: addi	ab, 8
-8543	# 01D2: lv	v3, [ab]
-1404	# 01D4: la	ab, vec4x16_var7
-14E1	# 
-8940	# 01D8: sv	[ab], v0
-1F8A	# 01DA: addi	ab, -8
-8941	# 01DC: sv	[ab], v1
-1F8A	# 01DE: addi	ab, -8
-8942	# 01E0: sv	[ab], v2
-1F8A	# 01E2: addi	ab, -8
-8943	# 01E4: sv	[ab], v3
-1404	# 01E6: la	ab, vec4x16_var4
-1481	# 
-5F5D	# 01EA: call	put_vec4x16_hex
-5F2F	# 01EC: call	newline
-1404	# 01EE: la	ab, vec4x16_var5
-14A1	# 
-5F59	# 01F2: call	put_vec4x16_hex
-5F2B	# 01F4: call	newline
-1404	# 01F6: la	ab, vec4x16_var6
-14C1	# 
-5F55	# 01FA: call	put_vec4x16_hex
-5F27	# 01FC: call	newline
-1404	# 01FE: la	ab, vec4x16_var7
-14E1	# 
-5F51	# 0202: call	put_vec4x16_hex
-5F23	# 0204: call	newline
-08EF	# 0206: pop	ra
+8540	# 01C8: lv	v0, [ab]
+1C4A	# 01CA: addi	ab, 4
+8541	# 01CC: lv	v1, [ab]
+1C4A	# 01CE: addi	ab, 4
+8542	# 01D0: lv	v2, [ab]
+1C4A	# 01D2: addi	ab, 4
+8543	# 01D4: lv	v3, [ab]
+1404	# 01D6: la	ab, vec4x8_var7
+1471	# 
+8940	# 01DA: sv	[ab], v0
+1FCA	# 01DC: addi	ab, -4
+8941	# 01DE: sv	[ab], v1
+1FCA	# 01E0: addi	ab, -4
+8942	# 01E2: sv	[ab], v2
+1FCA	# 01E4: addi	ab, -4
+8943	# 01E6: sv	[ab], v3
+1404	# 01E8: la	ab, vec4x8_var4
+1441	# 
+5F79	# 01EC: call	put_vec4x8_hex
+5F2E	# 01EE: call	newline
+1404	# 01F0: la	ab, vec4x8_var5
+1451	# 
+5F75	# 01F4: call	put_vec4x8_hex
+5F2A	# 01F6: call	newline
+1404	# 01F8: la	ab, vec4x8_var6
+1461	# 
+5F71	# 01FC: call	put_vec4x8_hex
+5F26	# 01FE: call	newline
+1404	# 0200: la	ab, vec4x8_var7
+1471	# 
+5F6D	# 0204: call	put_vec4x8_hex
+5F22	# 0206: call	newline
+08EF	# 0208: pop	ra
 1C4E	# 
-580F	# 020A: jmpr	ra
-16122*0
+580F	# 020C: jmpr	ra
+16121*0
 # ======================================
 # Begin data segment
-5465	# 8000: vec4x16_start_msg
+5465	# 8000: vec4x8_start_msg
 7374	# 
 3A20	# 
 3478	# 
-3136	# 
-206C	# 
-762F	# 
-7376	# 
-2E20	# 
-4C6F	# 
-6164	# 
-696E	# 
-6720	# 
-5241	# 
-4D2E	# 
+3820	# 
+6C76	# 
+2F73	# 
+762E	# 
+204C	# 
+6F61	# 
+6469	# 
+6E67	# 
+2052	# 
+414D	# 
 2E2E	# 
+2E00	# 
 0000	# 
-646F	# 8022: vec4x16_expect_msg
+646F	# 8022: vec4x8_expect_msg
 6E65	# 
 2E0A	# 
 4578	# 
@@ -294,44 +295,28 @@ v2.0 raw
 6374	# 
 3A0A	# 
 3030	# 
-3030	# 
 2030	# 
-3030	# 
 3120	# 
-3030	# 
 3032	# 
 2030	# 
-3030	# 
 330A	# 
-3030	# 
 3034	# 
 2030	# 
-3030	# 
 3520	# 
-3030	# 
 3036	# 
 2030	# 
-3030	# 
 370A	# 
-3030	# 
 3038	# 
 2030	# 
-3030	# 
 3920	# 
-3030	# 
 3041	# 
 2030	# 
-3030	# 
 420A	# 
-3030	# 
 3043	# 
 2030	# 
-3030	# 
 4420	# 
-3030	# 
 3045	# 
 2030	# 
-3030	# 
 460A	# 
 2D2D	# 
 2D2D	# 
@@ -342,30 +327,22 @@ v2.0 raw
 2D2D	# 
 0A00	# 
 0000	# 
-000C	# 8092
-000D	# 
-000E	# 
-000F	# 
-0008	# 809A
-0009	# 
-000A	# 
-000B	# 
-0004	# 80A2
-0005	# 
-0006	# 
-0007	# 
-0000	# 80AA
-0001	# 
-0002	# 
-0003	# 
-0000	# 80B2: vec4x16_data_end
+0C0D	# 8072
+0E0F	# 
+0809	# 8076
+0A0B	# 
+0405	# 807A
+0607	# 
+0001	# 807E
+0203	# 
+0000	# 8082: vec4x8_data_end
 # ======================================
 # Begin global segment
-# vec4x16_var4: 10020
-# vec4x16_var3: 10018
-# vec4x16_var2: 10010
-# vec4x16_var1: 10008
-# vec4x16_var0: 10000
-# vec4x16_var7: 10038
-# vec4x16_var6: 10030
-# vec4x16_var5: 10028
+# vec4x8_var5: 10014
+# vec4x8_var4: 10010
+# vec4x8_var7: 1001C
+# vec4x8_var6: 10018
+# vec4x8_var1: 10004
+# vec4x8_var0: 10000
+# vec4x8_var3: 1000C
+# vec4x8_var2: 10008
