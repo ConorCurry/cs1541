@@ -1,0 +1,371 @@
+v2.0 raw
+# to load this file into Logisim:
+# 1) redirect the output from the assembler to a file
+# 2) use the poke tool in Logisim and right-click the ROM component
+# 3) select Load Image menu option
+# 4) load the saved file
+17FC	# 0000: la	ab, 0xFF0000              (reset)
+1401	# 
+04AE	# 0004: mov	sp, ab
+1000	# 0006: ldi	a, 0
+1001	# 0008: ldi	b, 0
+1002	# 000A: ldi	c, 0
+1003	# 000C: ldi	d, 0
+0404	# 000E: mov	e, a
+0405	# 0010: mov	f, a
+5C02	# 0012: call	clear_display
+5CB7	# 0014: call	main
+0000	# 0016: halt
+17FE	# 0018: la	cd, 0xFF0000              (clear_display)
+1403	# 
+1404	# 001C: ldiu	a, 1
+0C80	# 001E: st	[cd], a
+580F	# 0020: jmpr	ra
+17FE	# 0022: la	cd, 0xFF0002              (puts)
+140B	# 
+1FCE	# 0026: push	ef              (puts_disp)
+0CE9	# 
+04A9	# 002A: mov	ef, ab
+0890	# 002C: ld	a, [ef]              (_puts_loop)
+0401	# 002E: mov	b, a
+3881	# 0030: shr	b, 8
+4001	# 0032: cmpi	b, 0
+4408	# 0034: beq	_puts_end
+0C81	# 0036: st	[cd], b
+0401	# 0038: mov	b, a
+2BFD	# 003A: andi	b, 0xFF
+4001	# 003C: cmpi	b, 0
+4403	# 003E: beq	_puts_end
+0C81	# 0040: st	[cd], b
+1C29	# 0042: addi	ef, 2
+57F3	# 0044: jmp	_puts_loop
+08E9	# 0046: pop	ef              (_puts_end)
+1C4E	# 
+580F	# 004A: jmpr	ra
+1428	# 004C: ldiu	a, 10              (newline)
+17FE	# 004E: la	cd, 0xFF0002              (putc)
+140B	# 
+0C80	# 0052: st	[cd], a              (putc_disp)
+580F	# 0054: jmpr	ra
+17FE	# 0056: la	cd, 0xFF0002              (put_nybble)
+140B	# 
+283D	# 005A: andi	b, 0xF              (put_nybble_disp)
+40A1	# 005C: cmpi	b, 10
+4C01	# 005E: blt	_noletter
+1C71	# 0060: addi	b, 7
+1D81	# 0062: addi	b, 0x18              (_noletter)
+1D81	# 0064: addi	b, 0x18
+0C81	# 0066: st	[cd], b
+580F	# 0068: jmpr	ra
+17FE	# 006A: la	cd, 0xFF0002              (put_byte_hex)
+140B	# 
+1FCE	# 006E: push	ra              (put_byte_hex_disp)
+0CEF	# 
+0401	# 0072: mov	b, a
+3841	# 0074: shr	b, 4
+5FF1	# 0076: call	put_nybble_disp
+0401	# 0078: mov	b, a
+5FEF	# 007A: call	put_nybble_disp
+08EF	# 007C: pop	ra
+1C4E	# 
+580F	# 0080: jmpr	ra
+17FE	# 0082: la	cd, 0xFF0002              (put_word_hex)
+140B	# 
+1FCE	# 0086: push	ra              (put_word_hex_disp)
+0CEF	# 
+0401	# 008A: mov	b, a
+38C1	# 008C: shr	b, 12
+5FE5	# 008E: call	put_nybble_disp
+0401	# 0090: mov	b, a
+3881	# 0092: shr	b, 8
+5FE2	# 0094: call	put_nybble_disp
+0401	# 0096: mov	b, a
+3841	# 0098: shr	b, 4
+5FDF	# 009A: call	put_nybble_disp
+0401	# 009C: mov	b, a
+5FDD	# 009E: call	put_nybble_disp
+08EF	# 00A0: pop	ra
+1C4E	# 
+580F	# 00A4: jmpr	ra
+17FE	# 00A6: la	cd, 0xFF0002              (put_vec4x16_hex)
+140B	# 
+1FCE	# 00AA: push	ra              (put_vec4x16_hex_disp)
+0CEF	# 
+1FCE	# 00AE: push	ef
+0CE9	# 
+04A9	# 00B2: mov	ef, ab
+0890	# 00B4: ld	a, [ef]
+5FE7	# 00B6: call	put_word_hex_disp
+1080	# 00B8: ldi	a, 0x20
+5FCB	# 00BA: call	putc_disp
+1C29	# 00BC: addi	ef, 2
+0890	# 00BE: ld	a, [ef]
+5FE2	# 00C0: call	put_word_hex_disp
+1080	# 00C2: ldi	a, 0x20
+5FC6	# 00C4: call	putc_disp
+1C29	# 00C6: addi	ef, 2
+0890	# 00C8: ld	a, [ef]
+5FDD	# 00CA: call	put_word_hex_disp
+1080	# 00CC: ldi	a, 0x20
+5FC1	# 00CE: call	putc_disp
+1C29	# 00D0: addi	ef, 2
+0890	# 00D2: ld	a, [ef]
+5FD8	# 00D4: call	put_word_hex_disp
+08E9	# 00D6: pop	ef
+1C4E	# 
+08EF	# 00DA: pop	ra
+1C4E	# 
+580F	# 00DE: jmpr	ra
+17FE	# 00E0: la	cd, 0xFF0002              (put_vec4x8_hex)
+140B	# 
+1FCE	# 00E4: push	ra              (put_vec4x8_hex_disp)
+0CEF	# 
+1FCE	# 00E8: push	ef
+0CE9	# 
+04A9	# 00EC: mov	ef, ab
+0890	# 00EE: ld	a, [ef]
+3880	# 00F0: shr	a, 8
+5FBD	# 00F2: call	put_byte_hex_disp
+1080	# 00F4: ldi	a, 0x20
+5FAD	# 00F6: call	putc_disp
+0890	# 00F8: ld	a, [ef]
+5FB9	# 00FA: call	put_byte_hex_disp
+1080	# 00FC: ldi	a, 0x20
+5FA9	# 00FE: call	putc_disp
+1C29	# 0100: addi	ef, 2
+0890	# 0102: ld	a, [ef]
+3880	# 0104: shr	a, 8
+5FB3	# 0106: call	put_byte_hex_disp
+1080	# 0108: ldi	a, 0x20
+5FA3	# 010A: call	putc_disp
+0890	# 010C: ld	a, [ef]
+5FAF	# 010E: call	put_byte_hex_disp
+08E9	# 0110: pop	ef
+1C4E	# 
+08EF	# 0114: pop	ra
+1C4E	# 
+580F	# 0118: jmpr	ra
+17FE	# 011A: la	cd, 0xFF0002              (put_vec2x16_hex)
+140B	# 
+1FCE	# 011E: push	ra              (put_vec2x16_hex_disp)
+0CEF	# 
+1FCE	# 0122: push	ef
+0CE9	# 
+04A9	# 0126: mov	ef, ab
+0890	# 0128: ld	a, [ef]
+5FAD	# 012A: call	put_word_hex_disp
+1080	# 012C: ldi	a, 0x20
+5F91	# 012E: call	putc_disp
+1C29	# 0130: addi	ef, 2
+0890	# 0132: ld	a, [ef]
+5FA8	# 0134: call	put_word_hex_disp
+08E9	# 0136: pop	ef
+1C4E	# 
+08EF	# 013A: pop	ra
+1C4E	# 
+580F	# 013E: jmpr	ra
+17FE	# 0140: la	cd, 0xFF0002              (put_vec2x8_hex)
+140B	# 
+1FCE	# 0144: push	ra              (put_vec2x8_hex_disp)
+0CEF	# 
+1FCE	# 0148: push	ef
+0CE9	# 
+04A9	# 014C: mov	ef, ab
+0890	# 014E: ld	a, [ef]
+3880	# 0150: shr	a, 8
+5F8D	# 0152: call	put_byte_hex_disp
+1080	# 0154: ldi	a, 0x20
+5F7D	# 0156: call	putc_disp
+0890	# 0158: ld	a, [ef]
+5F89	# 015A: call	put_byte_hex_disp
+08E9	# 015C: pop	ef
+1C4E	# 
+08EF	# 0160: pop	ra
+1C4E	# 
+580F	# 0164: jmpr	ra
+1FCE	# 0166: push	ef              (memcpy_from_ROM)
+0CE9	# 
+0419	# 016A: mov	ef, b
+2044	# 016C: sub	e, e
+4000	# 016E: cmpi	a, 0              (_memcpy_from_ROM_loop)
+4406	# 0170: beq	_memcpy_from_ROM_loop_end
+0891	# 0172: ld	b, [ef]
+0C81	# 0174: st	[cd], b
+1C29	# 0176: addi	ef, 2
+1C28	# 0178: addi	cd, 2
+1FF0	# 017A: addi	a, -1
+57F8	# 017C: jmp	_memcpy_from_ROM_loop
+08E9	# 017E: pop	ef              (_memcpy_from_ROM_loop_end)
+1C4E	# 
+580F	# 0182: jmpr	ra
+1FCE	# 0184: push	ra              (main)
+0CEF	# 
+5C03	# 0188: call	test_4x16
+08EF	# 018A: pop	ra
+1C4E	# 
+580F	# 018E: jmpr	ra
+1FCE	# 0190: push	ra              (test_4x16)
+0CEF	# 
+1400	# 0194: la	ab, vec4x16_start_msg
+1601	# 
+3481	# 
+5F43	# 019A: call	puts
+1600	# 019C: la	a, vec4x16_data_end
+3480	# 
+32C8	# 
+1601	# 01A2: la	b, vec4x16_data
+3481	# 
+3249	# 
+2010	# 01A8: sub	a, b
+1406	# 01AA: la	cd, vec4x16_var0
+1403	# 
+1601	# 01AE: la	b, vec4x16_data
+3481	# 
+3249	# 
+5FD8	# 01B4: call	memcpy_from_ROM
+1400	# 01B6: la	ab, vec4x16_expect_msg
+1601	# 
+3481	# 
+3089	# 
+5F31	# 01BE: call	puts
+8084	# 01C0: vcfg	4, 4
+1404	# 01C2: la	ab, vec4x16_var0
+1401	# 
+8540	# 01C6: lv	v0, [ab]
+1C8A	# 01C8: addi	ab, 8
+8541	# 01CA: lv	v1, [ab]
+1C8A	# 01CC: addi	ab, 8
+8542	# 01CE: lv	v2, [ab]
+1C8A	# 01D0: addi	ab, 8
+8543	# 01D2: lv	v3, [ab]
+1404	# 01D4: la	ab, vec4x16_var7
+14E1	# 
+8940	# 01D8: sv	[ab], v0
+1F8A	# 01DA: addi	ab, -8
+8941	# 01DC: sv	[ab], v1
+1F8A	# 01DE: addi	ab, -8
+8942	# 01E0: sv	[ab], v2
+1F8A	# 01E2: addi	ab, -8
+8943	# 01E4: sv	[ab], v3
+1404	# 01E6: la	ab, vec4x16_var4
+1481	# 
+5F5D	# 01EA: call	put_vec4x16_hex
+5F2F	# 01EC: call	newline
+1404	# 01EE: la	ab, vec4x16_var5
+14A1	# 
+5F59	# 01F2: call	put_vec4x16_hex
+5F2B	# 01F4: call	newline
+1404	# 01F6: la	ab, vec4x16_var6
+14C1	# 
+5F55	# 01FA: call	put_vec4x16_hex
+5F27	# 01FC: call	newline
+1404	# 01FE: la	ab, vec4x16_var7
+14E1	# 
+5F51	# 0202: call	put_vec4x16_hex
+5F23	# 0204: call	newline
+08EF	# 0206: pop	ra
+1C4E	# 
+580F	# 020A: jmpr	ra
+16122*0
+# ======================================
+# Begin data segment
+5465	# 8000: vec4x16_start_msg
+7374	# 
+3A20	# 
+3478	# 
+3136	# 
+206C	# 
+762F	# 
+7376	# 
+2E20	# 
+4C6F	# 
+6164	# 
+696E	# 
+6720	# 
+5241	# 
+4D2E	# 
+2E2E	# 
+0000	# 
+646F	# 8022: vec4x16_expect_msg
+6E65	# 
+2E0A	# 
+4578	# 
+7065	# 
+6374	# 
+3A0A	# 
+3030	# 
+3030	# 
+2030	# 
+3030	# 
+3120	# 
+3030	# 
+3032	# 
+2030	# 
+3030	# 
+330A	# 
+3030	# 
+3034	# 
+2030	# 
+3030	# 
+3520	# 
+3030	# 
+3036	# 
+2030	# 
+3030	# 
+370A	# 
+3030	# 
+3038	# 
+2030	# 
+3030	# 
+3920	# 
+3030	# 
+3041	# 
+2030	# 
+3030	# 
+420A	# 
+3030	# 
+3043	# 
+2030	# 
+3030	# 
+4420	# 
+3030	# 
+3045	# 
+2030	# 
+3030	# 
+460A	# 
+2D2D	# 
+2D2D	# 
+2D2D	# 
+2D2D	# 
+2D2D	# 
+2D2D	# 
+2D2D	# 
+0A00	# 
+0000	# 
+000C	# 8092
+000D	# 
+000E	# 
+000F	# 
+0008	# 809A
+0009	# 
+000A	# 
+000B	# 
+0004	# 80A2
+0005	# 
+0006	# 
+0007	# 
+0000	# 80AA
+0001	# 
+0002	# 
+0003	# 
+0000	# 80B2: vec4x16_data_end
+# ======================================
+# Begin global segment
+# vec4x16_var4: 10020
+# vec4x16_var3: 10018
+# vec4x16_var2: 10010
+# vec4x16_var1: 10008
+# vec4x16_var0: 10000
+# vec4x16_var7: 10038
+# vec4x16_var6: 10030
+# vec4x16_var5: 10028

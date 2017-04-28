@@ -1,0 +1,460 @@
+;--------------------------------------------------------------------------------------------------
+; void reset()
+; When the CPU resets, this code is run.
+;--------------------------------------------------------------------------------------------------
+
+reset:
+	la	ab, 0xFF0000
+	mov	sp, ab
+
+	ldi	a, 0
+	ldi	b, 0
+	ldi	c, 0
+	ldi	d, 0
+	mov	e, a
+	mov	f, a
+
+	call	clear_display
+	call	main
+	halt
+
+;--------------------------------------------------------------------------------------------------
+; void clear_display()
+; Clears the display!
+; modifies a, c, d
+;--------------------------------------------------------------------------------------------------
+
+clear_display:
+	la	cd, 0xFF0000
+	ldiu	a, 1
+	st	[cd], a
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void puts(char* msg: ab)
+; Outputs a string to the display. Does not put a newline at the end.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+puts:
+	; display data register is at 0xFF_0002
+	; writing a character to it outputs that character
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void puts_disp(char* msg: ab, void* disp: cd)
+; Same as puts, but display address is in cd.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+puts_disp:
+	push	ef
+	mov	ef, ab
+	; have to load pair of chars, then shift/mask
+_puts_loop:
+	ld	a, [ef]
+	; big-endian so first byte is in MSBs of a
+	mov	b, a
+	shr	b, 8
+	cmpi	b, 0
+	beq	_puts_end
+	st	[cd], b
+
+	; second char
+	mov	b, a
+	andi	b, 0xFF
+	cmpi	b, 0
+	beq	_puts_end
+	st	[cd], b
+
+	; loooop
+	addi	ef, 2
+	jmp	_puts_loop
+
+_puts_end:
+	pop	ef
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void newline()
+; Outputs a newline to the display.
+; modifies a, c, d
+;--------------------------------------------------------------------------------------------------
+
+newline:
+	ldiu	a, 10
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void putc(char c: a)
+; Outputs a single character to the display.
+; modifies c, d
+;--------------------------------------------------------------------------------------------------
+
+putc:
+	la	cd, 0xFF0002
+
+;--------------------------------------------------------------------------------------------------
+; void putc_disp(char c: a, void* disp: cd)
+; Same as putc(), but display address is in cd.
+;--------------------------------------------------------------------------------------------------
+
+putc_disp:
+	st	[cd], a
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_nybble(char val: a)
+; Outputs a single hex digit to the display, whose value is in a.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_nybble:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_nybble_disp(char val: b, void* disp: cd)
+; Same as put_nybble(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_nybble_disp:
+	andi	b, 0xF
+	cmpi	b, 10
+	blt	_noletter
+	addi	b, 7
+_noletter:
+	addi	b, 0x18 ; can't do 0x30 cause 6-bit immediate is sign-extended...
+	addi	b, 0x18
+	st	[cd], b
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_byte_hex(char val: a)
+; Outputs a 2-digit hex representation of a byte to the display.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_byte_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_byte_hex_disp(char val: a, void* disp: cd)
+; Same as put_byte_hex(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_byte_hex_disp:
+	push	ra
+
+	; top nybble
+	mov	b, a
+	shr	b, 4
+	call	put_nybble_disp
+
+	; bottom nybble
+	mov	b, a
+	call	put_nybble_disp
+
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_word_hex(short val: a)
+; Outputs a 4-digit hex representation of a word to the display.
+; modifies b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_word_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_word_hex_disp(short val: a, void* disp: cd)
+; Same as put_word_hex(), but display address is in cd.
+; modifies b
+;--------------------------------------------------------------------------------------------------
+
+put_word_hex_disp:
+	push	ra
+
+	mov	b, a
+	shr	b, 12
+	call	put_nybble_disp
+	mov	b, a
+	shr	b, 8
+	call	put_nybble_disp
+	mov	b, a
+	shr	b, 4
+	call	put_nybble_disp
+	mov	b, a
+	call	put_nybble_disp
+
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec4x16_hex(vec4x16* pval: ab)
+; Outputs a 4-element 16-bit vector in hex to the display. The value is pointed to by ab.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_vec4x16_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec4x16_hex_disp(vec4x16* pval: ab, void* disp: cd)
+; Same as put_vec4x16_hex(), but display address is in cd.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+put_vec4x16_hex_disp:
+	push	ra
+	push	ef
+
+	mov	ef, ab
+	ld	a, [ef]
+	call	put_word_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	addi	ef, 2
+	ld	a, [ef]
+	call	put_word_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	addi	ef, 2
+	ld	a, [ef]
+	call	put_word_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	addi	ef, 2
+	ld	a, [ef]
+	call	put_word_hex_disp
+
+	pop	ef
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec4x8_hex(vec4x8* pval: ab)
+; Outputs a 4-element 8-bit vector in hex to the display. The value is pointed to by ab.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_vec4x8_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec4x8_hex_disp(vec4x8* pval: ab, void* disp: cd)
+; Same as put_vec4x8_hex(), but display address is in cd.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+put_vec4x8_hex_disp:
+	push	ra
+	push	ef
+
+	mov	ef, ab
+	ld	a, [ef]
+	shr	a, 8
+	call	put_byte_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	ld	a, [ef]
+	call	put_byte_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	addi	ef, 2
+	ld	a, [ef]
+	shr	a, 8
+	call	put_byte_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	ld	a, [ef]
+	call	put_byte_hex_disp
+
+	pop	ef
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec2x16_hex(vec2x16* pval: ab)
+; Outputs a 2-element 16-bit vector in hex to the display. The value is pointed to by ab.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_vec2x16_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec2x16_hex_disp(vec2x16* pval: ab, void* disp: cd)
+; Same as put_vec2x16_hex(), but display address is in cd.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+put_vec2x16_hex_disp:
+	push	ra
+	push	ef
+
+	mov	ef, ab
+	ld	a, [ef]
+	call	put_word_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	addi	ef, 2
+	ld	a, [ef]
+	call	put_word_hex_disp
+
+	pop	ef
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec2x8_hex(vec2x8* pval: ab)
+; Outputs a 2-element 8-bit vector in hex to the display. The value is pointed to by ab.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+put_vec2x8_hex:
+	la	cd, 0xFF0002
+	; fall through
+
+;--------------------------------------------------------------------------------------------------
+; void put_vec2x8_hex_disp(vec2x8* pval: ab, void* disp: cd)
+; Same as put_vec2x8_hex(), but display address is in cd.
+; modifies a, b
+;--------------------------------------------------------------------------------------------------
+
+put_vec2x8_hex_disp:
+	push	ra
+	push	ef
+
+	mov	ef, ab
+	ld	a, [ef]
+	shr	a, 8
+	call	put_byte_hex_disp
+	ldi	a, 0x20
+	call	putc_disp
+	ld	a, [ef]
+	call	put_byte_hex_disp
+
+	pop	ef
+	pop	ra
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+; void memcpy_from_ROM(void* dest: cd, void* src: b, int count: a)
+; Copies `count` WORDS from src to dest. src must be in ROM.
+; modifies a, b, c, d
+;--------------------------------------------------------------------------------------------------
+
+memcpy_from_ROM:
+	push	ef
+	mov	ef, b
+	sub	e, e ; zero out e so ef is 00xxxx
+_memcpy_from_ROM_loop:
+	cmpi	a, 0
+	beq	_memcpy_from_ROM_loop_end
+	ld	b, [ef]
+	st	[cd], b
+	addi	ef, 2
+	addi	cd, 2
+	addi	a, -1
+	jmp	_memcpy_from_ROM_loop
+_memcpy_from_ROM_loop_end:
+	pop	ef
+	jmpr	ra
+
+;--------------------------------------------------------------------------------------------------
+;--------------------------------------------------------------------------------------------------
+
+main:
+	push	ra
+
+	call	test_4x16
+
+	pop	ra
+	jmpr	ra
+
+.data
+vec4x16_start_msg: .string "Test: 4x16 lv/sv. Loading RAM..."
+vec4x16_expect_msg: .string "done.\nExpect:\n0000 0001 0002 0003\n0004 0005 0006 0007\n0008 0009 000A 000B\n000C 000D 000E 000F\n--------------\n"
+
+vec4x16_data:
+	.vec4x16 0xc 0xd 0xe 0xf
+	.vec4x16 0x8 0x9 0xa 0xb
+	.vec4x16 0x4 0x5 0x6 0x7
+	.vec4x16 0x0 0x1 0x2 0x3
+vec4x16_data_end: .word 0
+
+.global
+vec4x16_var0: .vec4x16
+vec4x16_var1: .vec4x16
+vec4x16_var2: .vec4x16
+vec4x16_var3: .vec4x16
+vec4x16_var4: .vec4x16
+vec4x16_var5: .vec4x16
+vec4x16_var6: .vec4x16
+vec4x16_var7: .vec4x16
+
+.text
+test_4x16:
+	push	ra
+
+	; start message.
+	la	ab, vec4x16_start_msg
+	call	puts
+
+	; copy data from ROM to RAM
+	la	a, vec4x16_data_end
+	la	b, vec4x16_data
+	sub	a, b
+	la	cd, vec4x16_var0
+	la	b, vec4x16_data
+	call	memcpy_from_ROM
+
+	; expectation message.
+	la	ab, vec4x16_expect_msg
+	call	puts
+
+	; load and store the stuff!
+	vcfg	4, 4
+	la	ab, vec4x16_var0
+	lv	v0, [ab]
+	addi	ab, 8
+	lv	v1, [ab]
+	addi	ab, 8
+	lv	v2, [ab]
+	addi	ab, 8
+	lv	v3, [ab]
+	la	ab, vec4x16_var7
+	sv	[ab], v0
+	addi	ab, -8
+	sv	[ab], v1
+	addi	ab, -8
+	sv	[ab], v2
+	addi	ab, -8
+	sv	[ab], v3
+
+	; print out the contents of the variables.
+	la	ab, vec4x16_var4
+	call	put_vec4x16_hex
+	call	newline
+	la	ab, vec4x16_var5
+	call	put_vec4x16_hex
+	call	newline
+	la	ab, vec4x16_var6
+	call	put_vec4x16_hex
+	call	newline
+	la	ab, vec4x16_var7
+	call	put_vec4x16_hex
+	call	newline
+
+	pop	ra
+	jmpr	ra
